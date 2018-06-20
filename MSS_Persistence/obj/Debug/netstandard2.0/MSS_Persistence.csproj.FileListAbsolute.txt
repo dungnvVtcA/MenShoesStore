@@ -1,0 +1,8 @@
+C:\Users\DUNG\Desktop\MenShoes\MenShoesStore\MSS_Persistence\bin\Debug\netstandard2.0\MSS_Persistence.deps.json
+C:\Users\DUNG\Desktop\MenShoes\MenShoesStore\MSS_Persistence\bin\Debug\netstandard2.0\MSS_Persistence.dll
+C:\Users\DUNG\Desktop\MenShoes\MenShoesStore\MSS_Persistence\bin\Debug\netstandard2.0\MSS_Persistence.pdb
+C:\Users\DUNG\Desktop\MenShoes\MenShoesStore\MSS_Persistence\obj\Debug\netstandard2.0\MSS_Persistence.csproj.CoreCompileInputs.cache
+C:\Users\DUNG\Desktop\MenShoes\MenShoesStore\MSS_Persistence\obj\Debug\netstandard2.0\MSS_Persistence.AssemblyInfoInputs.cache
+C:\Users\DUNG\Desktop\MenShoes\MenShoesStore\MSS_Persistence\obj\Debug\netstandard2.0\MSS_Persistence.AssemblyInfo.cs
+C:\Users\DUNG\Desktop\MenShoes\MenShoesStore\MSS_Persistence\obj\Debug\netstandard2.0\MSS_Persistence.dll
+C:\Users\DUNG\Desktop\MenShoes\MenShoesStore\MSS_Persistence\obj\Debug\netstandard2.0\MSS_Persistence.pdb
