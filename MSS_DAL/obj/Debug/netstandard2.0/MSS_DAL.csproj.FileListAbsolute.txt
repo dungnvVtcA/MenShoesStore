@@ -9,3 +9,14 @@ C:\Users\DUNG\Desktop\MenShoes\MenShoesStore\MSS_DAL\obj\Debug\netstandard2.0\MS
 C:\Users\DUNG\Desktop\MenShoes\MenShoesStore\MSS_DAL\obj\Debug\netstandard2.0\MSS_DAL.AssemblyInfo.cs
 C:\Users\DUNG\Desktop\MenShoes\MenShoesStore\MSS_DAL\obj\Debug\netstandard2.0\MSS_DAL.dll
 C:\Users\DUNG\Desktop\MenShoes\MenShoesStore\MSS_DAL\obj\Debug\netstandard2.0\MSS_DAL.pdb
+F:\MenShoes\MenShoesStore\MSS_DAL\bin\Debug\netstandard2.0\MSS_DAL.deps.json
+F:\MenShoes\MenShoesStore\MSS_DAL\bin\Debug\netstandard2.0\MSS_DAL.dll
+F:\MenShoes\MenShoesStore\MSS_DAL\bin\Debug\netstandard2.0\MSS_DAL.pdb
+F:\MenShoes\MenShoesStore\MSS_DAL\bin\Debug\netstandard2.0\MSS_Persistence.dll
+F:\MenShoes\MenShoesStore\MSS_DAL\bin\Debug\netstandard2.0\MSS_Persistence.pdb
+F:\MenShoes\MenShoesStore\MSS_DAL\obj\Debug\netstandard2.0\MSS_DAL.csprojResolveAssemblyReference.cache
+F:\MenShoes\MenShoesStore\MSS_DAL\obj\Debug\netstandard2.0\MSS_DAL.csproj.CoreCompileInputs.cache
+F:\MenShoes\MenShoesStore\MSS_DAL\obj\Debug\netstandard2.0\MSS_DAL.AssemblyInfoInputs.cache
+F:\MenShoes\MenShoesStore\MSS_DAL\obj\Debug\netstandard2.0\MSS_DAL.AssemblyInfo.cs
+F:\MenShoes\MenShoesStore\MSS_DAL\obj\Debug\netstandard2.0\MSS_DAL.dll
+F:\MenShoes\MenShoesStore\MSS_DAL\obj\Debug\netstandard2.0\MSS_DAL.pdb

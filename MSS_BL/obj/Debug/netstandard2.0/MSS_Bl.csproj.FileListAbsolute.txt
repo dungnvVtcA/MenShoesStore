@@ -1,0 +1,13 @@
+F:\MenShoes\MenShoesStore\MSS_BL\bin\Debug\netstandard2.0\MSS_Bl.deps.json
+F:\MenShoes\MenShoesStore\MSS_BL\bin\Debug\netstandard2.0\MSS_Bl.dll
+F:\MenShoes\MenShoesStore\MSS_BL\bin\Debug\netstandard2.0\MSS_Bl.pdb
+F:\MenShoes\MenShoesStore\MSS_BL\bin\Debug\netstandard2.0\MSS_DAL.dll
+F:\MenShoes\MenShoesStore\MSS_BL\bin\Debug\netstandard2.0\MSS_Persistence.dll
+F:\MenShoes\MenShoesStore\MSS_BL\bin\Debug\netstandard2.0\MSS_DAL.pdb
+F:\MenShoes\MenShoesStore\MSS_BL\bin\Debug\netstandard2.0\MSS_Persistence.pdb
+F:\MenShoes\MenShoesStore\MSS_BL\obj\Debug\netstandard2.0\MSS_Bl.csprojResolveAssemblyReference.cache
+F:\MenShoes\MenShoesStore\MSS_BL\obj\Debug\netstandard2.0\MSS_Bl.csproj.CoreCompileInputs.cache
+F:\MenShoes\MenShoesStore\MSS_BL\obj\Debug\netstandard2.0\MSS_Bl.AssemblyInfoInputs.cache
+F:\MenShoes\MenShoesStore\MSS_BL\obj\Debug\netstandard2.0\MSS_Bl.AssemblyInfo.cs
+F:\MenShoes\MenShoesStore\MSS_BL\obj\Debug\netstandard2.0\MSS_Bl.dll
+F:\MenShoes\MenShoesStore\MSS_BL\obj\Debug\netstandard2.0\MSS_Bl.pdb

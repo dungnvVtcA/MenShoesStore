@@ -1,7 +1,7 @@
 {
   "runtimeTarget": {
     "name": ".NETStandard,Version=v2.0/",
-    "signature": "5907c0341424373f1db32cb17372267d2c5830f1"
+    "signature": "dc7118c6a52e6874454fd83f44cd13594a52d64e"
   },
   "compilationOptions": {},
   "targets": {
@@ -10,26 +10,17 @@
       "MSS_DAL/1.0.0": {
         "dependencies": {
           "MSS_Persistence": "1.0.0",
-          "MySql.Data": "8.0.11",
+          "MySql.Data": "6.10.6",
           "NETStandard.Library": "2.0.0"
         },
         "runtime": {
           "MSS_DAL.dll": {}
         }
       },
-      "Google.Protobuf/3.5.1": {
-        "dependencies": {
-          "NETStandard.Library": "2.0.0"
-        },
-        "runtime": {
-          "lib/netstandard1.0/Google.Protobuf.dll": {}
-        }
-      },
       "Microsoft.NETCore.Platforms/1.1.0": {},
       "Microsoft.NETCore.Targets/1.0.1": {},
-      "MySql.Data/8.0.11": {
+      "MySql.Data/6.10.6": {
         "dependencies": {
-          "Google.Protobuf": "3.5.1",
           "System.Configuration.ConfigurationManager": "4.4.0",
           "System.Security.Permissions": "4.4.0",
           "System.Text.Encoding.CodePages": "4.0.1"
@@ -207,13 +198,6 @@
       "serviceable": false,
       "sha512": ""
     },
-    "Google.Protobuf/3.5.1": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-f2k1VNaB9bfvEsvARzzEL1TZiIpL33KKK3JMH7UANlPlJVptuvsk4qpBZEnz0pORWZOdUHlVwMQuUzFqjJYCxA==",
-      "path": "google.protobuf/3.5.1",
-      "hashPath": "google.protobuf.3.5.1.nupkg.sha512"
-    },
     "Microsoft.NETCore.Platforms/1.1.0": {
       "type": "package",
       "serviceable": true,
@@ -228,12 +212,12 @@
       "path": "microsoft.netcore.targets/1.0.1",
       "hashPath": "microsoft.netcore.targets.1.0.1.nupkg.sha512"
     },
-    "MySql.Data/8.0.11": {
+    "MySql.Data/6.10.6": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-P5zKcnM2SVtdHD6gfReymJguIYLhNL5Og8Qm5TC9MEsSupsAYrRu4AB4nsbalrjqqv8VHBqVREWsXg9lY+q03A==",
-      "path": "mysql.data/8.0.11",
-      "hashPath": "mysql.data.8.0.11.nupkg.sha512"
+      "sha512": "sha512-dcod4CxVkrRANjfVWS7um5HTyLFJhyBGp5hVSdmrhhZZiP9cX3ZNfoZ0W88f6lDWExJuILsAIbctZirQ9mpjQQ==",
+      "path": "mysql.data/6.10.6",
+      "hashPath": "mysql.data.6.10.6.nupkg.sha512"
     },
     "NETStandard.Library/2.0.0": {
       "type": "package",

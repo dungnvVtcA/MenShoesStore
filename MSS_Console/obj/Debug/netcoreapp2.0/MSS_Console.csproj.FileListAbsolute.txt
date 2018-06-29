@@ -1,0 +1,17 @@
+F:\MenShoes\MenShoesStore\MSS_Console\bin\Debug\netcoreapp2.0\MSS_Console.deps.json
+F:\MenShoes\MenShoesStore\MSS_Console\bin\Debug\netcoreapp2.0\MSS_Console.runtimeconfig.json
+F:\MenShoes\MenShoesStore\MSS_Console\bin\Debug\netcoreapp2.0\MSS_Console.runtimeconfig.dev.json
+F:\MenShoes\MenShoesStore\MSS_Console\bin\Debug\netcoreapp2.0\MSS_Console.dll
+F:\MenShoes\MenShoesStore\MSS_Console\bin\Debug\netcoreapp2.0\MSS_Console.pdb
+F:\MenShoes\MenShoesStore\MSS_Console\bin\Debug\netcoreapp2.0\MSS_Bl.dll
+F:\MenShoes\MenShoesStore\MSS_Console\bin\Debug\netcoreapp2.0\MSS_DAL.dll
+F:\MenShoes\MenShoesStore\MSS_Console\bin\Debug\netcoreapp2.0\MSS_Persistence.dll
+F:\MenShoes\MenShoesStore\MSS_Console\bin\Debug\netcoreapp2.0\MSS_Bl.pdb
+F:\MenShoes\MenShoesStore\MSS_Console\bin\Debug\netcoreapp2.0\MSS_Persistence.pdb
+F:\MenShoes\MenShoesStore\MSS_Console\bin\Debug\netcoreapp2.0\MSS_DAL.pdb
+F:\MenShoes\MenShoesStore\MSS_Console\obj\Debug\netcoreapp2.0\MSS_Console.csprojResolveAssemblyReference.cache
+F:\MenShoes\MenShoesStore\MSS_Console\obj\Debug\netcoreapp2.0\MSS_Console.csproj.CoreCompileInputs.cache
+F:\MenShoes\MenShoesStore\MSS_Console\obj\Debug\netcoreapp2.0\MSS_Console.AssemblyInfoInputs.cache
+F:\MenShoes\MenShoesStore\MSS_Console\obj\Debug\netcoreapp2.0\MSS_Console.AssemblyInfo.cs
+F:\MenShoes\MenShoesStore\MSS_Console\obj\Debug\netcoreapp2.0\MSS_Console.dll
+F:\MenShoes\MenShoesStore\MSS_Console\obj\Debug\netcoreapp2.0\MSS_Console.pdb

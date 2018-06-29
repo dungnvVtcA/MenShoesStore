@@ -183,11 +183,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\DUNG\\Desktop\\MenShoes\\MenShoesStore\\MSS_Persistence\\MSS_Persistence.csproj",
+      "projectUniqueName": "F:\\MenShoes\\MenShoesStore\\MSS_Persistence\\MSS_Persistence.csproj",
       "projectName": "MSS_Persistence",
-      "projectPath": "C:\\Users\\DUNG\\Desktop\\MenShoes\\MenShoesStore\\MSS_Persistence\\MSS_Persistence.csproj",
+      "projectPath": "F:\\MenShoes\\MenShoesStore\\MSS_Persistence\\MSS_Persistence.csproj",
       "packagesPath": "C:\\Users\\DUNG\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\DUNG\\Desktop\\MenShoes\\MenShoesStore\\MSS_Persistence\\obj\\",
+      "outputPath": "F:\\MenShoes\\MenShoesStore\\MSS_Persistence\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
