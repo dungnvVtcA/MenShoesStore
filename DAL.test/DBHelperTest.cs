@@ -5,7 +5,7 @@ using MSS_DAL;
 
 namespace DAL.test
 {
-    public class DBHelperUnitTest
+    public class DBHelperTest
     {
         [Fact]
         public void GetConnectionTest()
@@ -15,9 +15,9 @@ namespace DAL.test
         
         [Fact]
         public void OpenConnectionTest()
-        {
-            MySqlConnection con =  DBHelper.OpenConnection();      
-            Assert.NotNull(con);
+        {      
+            Assert.NotNull(DBHelper.OpenConnection());
         }
+        
     }
 }

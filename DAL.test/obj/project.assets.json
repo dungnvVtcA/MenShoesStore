@@ -1822,7 +1822,7 @@
         "framework": ".NETStandard,Version=v2.0",
         "dependencies": {
           "MSS_Persistence": "1.0.0",
-          "MySql.Data": "8.0.11"
+          "MySql.Data": "6.10.6"
         },
         "compile": {
           "bin/placeholder/MSS_DAL.dll": {}
@@ -6115,11 +6115,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "F:\\MenShoes\\MenShoesStore\\DAL.test\\DAL.test.csproj",
+      "projectUniqueName": "C:\\Users\\DUNG\\Desktop\\MenShoesStore\\DAL.test\\DAL.test.csproj",
       "projectName": "DAL.test",
-      "projectPath": "F:\\MenShoes\\MenShoesStore\\DAL.test\\DAL.test.csproj",
+      "projectPath": "C:\\Users\\DUNG\\Desktop\\MenShoesStore\\DAL.test\\DAL.test.csproj",
       "packagesPath": "C:\\Users\\DUNG\\.nuget\\packages\\",
-      "outputPath": "F:\\MenShoes\\MenShoesStore\\DAL.test\\obj\\",
+      "outputPath": "C:\\Users\\DUNG\\Desktop\\MenShoesStore\\DAL.test\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -6136,8 +6136,8 @@
       "frameworks": {
         "netcoreapp2.0": {
           "projectReferences": {
-            "F:\\MenShoes\\MenShoesStore\\MSS_DAL\\MSS_DAL.csproj": {
-              "projectPath": "F:\\MenShoes\\MenShoesStore\\MSS_DAL\\MSS_DAL.csproj"
+            "C:\\Users\\DUNG\\Desktop\\MenShoesStore\\MSS_DAL\\MSS_DAL.csproj": {
+              "projectPath": "C:\\Users\\DUNG\\Desktop\\MenShoesStore\\MSS_DAL\\MSS_DAL.csproj"
             }
           }
         }

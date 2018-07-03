@@ -4,19 +4,21 @@ using MSS_Persistence;
 using MSS_DAL;
 using MySql.Data.MySqlClient;
 
-namespace  DAL.test
+namespace DAL.test
 {
-    public class  UserTest
+    public class UserTest
     {
         
         [Fact]
 
-        public void Check_IdPass_true()
+        public void LogIN_test()
         {
             UserDAL u = new UserDAL();
-            var result = u.Login("Nguyenvana","A12345678");
-            Assert.NotNull(result);
-        }        
+            User user = u.Login("Nguyenvana","A12345678");
+            
+            Assert.NotNull(user);
+        }     
+   
         
     }
 }

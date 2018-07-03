@@ -2,16 +2,20 @@ using System;
 using Xunit;
 using MSS_DAL;
 using MySql.Data.MySqlClient;
+using MSS_Persistence;
+using System.Collections.Generic;
+
 namespace DAL.test
 {
     public class OrderTest
     {
+
         // [Fact]
-        // public void checkIdOrderstest()
+        // public void Test_GetAllOrder()
         // {
-        //    OrdersDAl o = new OrdersDAl();
-        //    var result = o.checkIdOrders(1);
-        //    Assert.True(result);
+        //     OrdersDAl odl = new OrdersDAl();
+        //     List<Orders> listOrders = odl.GetAllOrder();
+        //     Assert.NotNull(listOrders);
         // }
     }
 }
