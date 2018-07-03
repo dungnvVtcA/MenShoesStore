@@ -1723,11 +1723,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "F:\\MenShoes\\MenShoesStore\\MSS_DAL\\MSS_DAL.csproj",
+      "projectUniqueName": "C:\\Users\\DUNG\\Desktop\\MenShoesStore\\MSS_DAL\\MSS_DAL.csproj",
       "projectName": "MSS_DAL",
-      "projectPath": "F:\\MenShoes\\MenShoesStore\\MSS_DAL\\MSS_DAL.csproj",
+      "projectPath": "C:\\Users\\DUNG\\Desktop\\MenShoesStore\\MSS_DAL\\MSS_DAL.csproj",
       "packagesPath": "C:\\Users\\DUNG\\.nuget\\packages\\",
-      "outputPath": "F:\\MenShoes\\MenShoesStore\\MSS_DAL\\obj\\",
+      "outputPath": "C:\\Users\\DUNG\\Desktop\\MenShoesStore\\MSS_DAL\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -1744,8 +1744,8 @@
       "frameworks": {
         "netstandard2.0": {
           "projectReferences": {
-            "F:\\MenShoes\\MenShoesStore\\MSS_Persistence\\MSS_Persistence.csproj": {
-              "projectPath": "F:\\MenShoes\\MenShoesStore\\MSS_Persistence\\MSS_Persistence.csproj"
+            "C:\\Users\\DUNG\\Desktop\\MenShoesStore\\MSS_Persistence\\MSS_Persistence.csproj": {
+              "projectPath": "C:\\Users\\DUNG\\Desktop\\MenShoesStore\\MSS_Persistence\\MSS_Persistence.csproj"
             }
           }
         }

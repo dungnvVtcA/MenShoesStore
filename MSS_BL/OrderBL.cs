@@ -16,9 +16,6 @@ namespace MSS_Bl
         {
             return or.GetAllOrder();
         }
-        public bool Delete(int id)
-        {
-            return or.DeleteOrder(id);
-        }
+        
     }
 }

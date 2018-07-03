@@ -9,9 +9,7 @@ namespace MSS_Persistence
 
         public DateTime Date_Order{set;get;}
 
-        public Customer customer{get;set;} = new Customer();
-
-        public Staff staff{set;get;} = new Staff();
+        public User user{set; get;} = new User();
 
         public int Order_status{set;get;}
 

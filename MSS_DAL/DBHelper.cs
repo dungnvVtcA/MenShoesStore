@@ -10,19 +10,18 @@ namespace MSS_DAL
         private static MySqlConnection connection;
         public static MySqlConnection GetConnection()
         {
-            if (connection == null)
-            {
-                connection = new MySqlConnection
+            connection = new MySqlConnection
                 {
-                    ConnectionString = "server=localhost;user id=root;password=12345678;port=3306;database=MenShoes;SslMode=None"
+                    ConnectionString = "server=localhost;user id=root;pwd=12345678;port=3306;database=MenShoes;sslmode=none;"
                 };
-            }
             return connection;
         }
         public static MySqlDataReader ExecQuery(string query)
         {
             MySqlCommand command = new MySqlCommand(query, connection);
-            return command.ExecuteReader();
+            MySqlDataReader reader = command.ExecuteReader();
+            
+            return reader;
         }
         
         public static MySqlConnection OpenConnection()
@@ -32,6 +31,7 @@ namespace MSS_DAL
                 GetConnection();
             }
             connection.Open();
+           
             return connection;
         }
         public static void CloseConnection()

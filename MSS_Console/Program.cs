@@ -125,7 +125,7 @@ class Program {
             {
             }
         }
-    class MENU
+    public class MENU
     {
         User user = null;
         UserBl ubl =new UserBl();
@@ -167,13 +167,7 @@ class Program {
             {
                 Console.Clear();
                 user = new User();
-                // Console.Write(" Welcome to MenShoesStore ^^\n");
-                // Console.Write("Log In \n");
-                // Console.Write("Username : ");
-                // user.AccountName = Console.ReadLine();
-                // Console.Write("passs : ") ;
-                // user.Password = GetConsolePassword();
-                var result = ubl.login("Nguyenvana","A12345678");
+                var result = ubl.login("Nguyenvandung","dung12345678");
                 id = result.User_id;
 
                 if( result != null)
@@ -186,38 +180,79 @@ class Program {
 
                     }else if( result.Type ==1)
                     {
-                        Console.Write("Chao mung nhan vien");
+                        
+                        MenuStaff();
                         break;
                     }
                 }
                 else 
                 {
                     Console.Write("Username or password is incorrect, please enter again!");
-                    var choice = Console.ReadLine();
-                    if( choice == " ")
-                    {}
+                    Console.ReadLine();
                 }
 
             }
         }
+        public static void MenuStaff()
+        {
+            OrderBL obl = new OrderBL();
+            var result = obl.GetAllOrder();
+            while(true)
+            {
+                Console.Clear();
+                int b = result.Count;
+                Console.WriteLine("1.Browse orders({0})",b);
+                Console.WriteLine("2.The list of approved orders");
+                Console.WriteLine("3.Reload page");
+                Console.WriteLine("4.Exits");
+                // string[] mainMenu = { "Browse orders", "The list of approved orders", "Reload page" };
+                // while( mainChoose!= mainMenu.Length)
+                // {
+                //     Console.Clear();
+                //     mainChoose = Menu("Men Shoes Store ", mainMenu);
+                int choice = Convert.ToInt32(Console.ReadLine());
+                switch(choice)
+                {
+                    case 1 : MENU.BrowseOrders();
+                    break;
+                    case 2 :MENU.ListApprovedorders();
+                    break;
+                    case 3 :MENU.Reload();
+                    break;
+                    case 4 :
+                    Environment.Exit(4);
+                    break;
+                    default :
+                    break;
+                }
+                
+            }
+        }
+        public static void BrowseOrders(){}
+
+        public static void ListApprovedorders(){}
+
+        public static void Reload(){}
         public static  void MenuCustomer()
         {
+            MENU menu = new MENU();
             
             while(true)
             {
                 Console.Clear();
                 short mainChoose = 0;
                 string[] mainMenu = { "Display list shoes", "Crete Orders ", "Display list orders", "Exit" };
-                do{
+                while( mainChoose!= mainMenu.Length)
+                {
                     Console.Clear();
                     mainChoose = Menu("Men Shoes Store ", mainMenu);
                     switch(mainChoose)
                     {
-                        case 1 : Displaylistshoes();
+                        case 1 :menu.Displaylistshoes();
                         break;
-                        case 2 : CreateOrders();
+                        case 2 : menu.CreateOrders();
                         break;
-                        case 3 : DisplayListOrders();
+                        case 3 : menu.DisplayListOrders();
                         break;
                         case 4 :
                         Environment.Exit(4);
@@ -226,7 +261,7 @@ class Program {
                         break;
                     }
 
-                }while( mainChoose!= mainMenu.Length);
+                }
             }
             
 
@@ -259,12 +294,11 @@ class Program {
             }
             return sb.ToString( );
         }
-        public static void Displaylistshoes()
+        public  void Displaylistshoes()
         {
             Console.Clear();
             ShoesBL sbl = new ShoesBL();
-            List<Shoes> lists = new List<Shoes>();
-            lists = sbl.GetAllShoes();
+            var lists = sbl.GetAllShoes();
             string line =("====================================================================================================================================================================================\n");
             Console.WriteLine(line);
             Console.Write(" Shoes_Id  |  Trademark_Id |  Shoes_Name       |  Material        |    Price    |  Size |             Manufacture                 |      Style            |   Color        | Amount |\n");
@@ -279,8 +313,9 @@ class Program {
 
         }
         
-        public static void CreateOrders()
+        public  void CreateOrders()
         {
+            Console.Clear();
             OrderBL obl = new OrderBL();
             Orders order = new Orders();
             ShoesBL sbl = new ShoesBL();
@@ -364,7 +399,7 @@ class Program {
             }
             
         }
-        public static void  DisplayListOrders()
+        public  void  DisplayListOrders()
         {
             Console.Clear();
             OrderBL obl = new OrderBL();

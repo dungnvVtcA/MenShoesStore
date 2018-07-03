@@ -7,10 +7,9 @@ namespace MSS_Bl
 {
     public class UserBl
     {
-        public int[] login(string id , string pass)
+        UserDAL u = new UserDAL();
+        public User login(string id , string pass)
         {
-            UserDAL u = new UserDAL();
-
             return u.Login(id,pass);
         }
     

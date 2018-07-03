@@ -3,33 +3,42 @@ using System.Collections;
 using System.Collections.Generic;
 using MySql.Data.MySqlClient;
 using MSS_Persistence;
+using System.Threading.Tasks;
 
 namespace MSS_DAL
 {
     public class UserDAL
     {
-        public int[] Login(string id , string pass)
+        public User Login(string id , string pass)
         {
-            
-            string query = "Select User_id, User_Password ,User_Type from Users where AccountName='"+id+"';";
+            lock (this)
+            {
+                string query = "Select User_id, User_Password ,User_Type from Users where AccountName='"+ id +"';";
             DBHelper.OpenConnection();
             MySqlDataReader reader = DBHelper.ExecQuery(query);
+                
+            User u = null;
             if(reader.Read())
-            {   
-                int[] user = new int[2];
-                string true_p = reader.GetString("User_Password");
-                user[1] =  reader.GetInt32("User_Type");
-                user[0] = reader.GetInt32("User_id");
-                if(pass == true_p  )
-               {
-                   DBHelper.CloseConnection();
-                  return user;  
-                   
-               }
+            {  
+                u = new User();
+                u.User_id = reader.GetInt32("User_id");
+                u.Type  =  reader.GetInt32("User_Type");
+                u.Password = reader.GetString("User_Password");
+                if(pass == u.Password)
+                {
+                    DBHelper.CloseConnection();
+                    return u;
+                }
+                else if( pass != u.Password)
+                {
+                    DBHelper.CloseConnection();
+                    return null;
+                }
             }
             reader.Close();
             DBHelper.CloseConnection();
-             return null;
+            return u;
+            }
         }
        
     }
