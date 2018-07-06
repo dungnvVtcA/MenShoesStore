@@ -4,6 +4,9 @@
     <ProjectReference Include="..\MSS_BL\MSS_Bl.csproj" />
     <ProjectReference Include="..\MSS_Persistence\MSS_Persistence.csproj" />
   </ItemGroup>
+  <Target Name="CopyConnectionString" AfterTargets="AfterBuild">
+    <Copy SourceFiles="./bin/Debug/netcoreapp2.0/ConnectionString.txt" DestinationFolder="./" />
+  </Target>
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>

@@ -24,3 +24,4 @@ C:\Users\DUNG\Desktop\MenShoesStore\MSS_BL\obj\Debug\netstandard2.0\MSS_Bl.Assem
 C:\Users\DUNG\Desktop\MenShoesStore\MSS_BL\obj\Debug\netstandard2.0\MSS_Bl.AssemblyInfo.cs
 C:\Users\DUNG\Desktop\MenShoesStore\MSS_BL\obj\Debug\netstandard2.0\MSS_Bl.dll
 C:\Users\DUNG\Desktop\MenShoesStore\MSS_BL\obj\Debug\netstandard2.0\MSS_Bl.pdb
+C:\Users\DUNG\Desktop\MenShoesStore\MSS_BL\bin\Debug\netstandard2.0\ConnectionString.txt

@@ -15,9 +15,5 @@ namespace MSS_Bl
         {
             return shoes.GetAllShoes();
         }
-        public Shoes GetShoesByName(string Shoes_name)
-        {
-            return shoes.GetShoesByName(Shoes_name);
-        }
     }
 }

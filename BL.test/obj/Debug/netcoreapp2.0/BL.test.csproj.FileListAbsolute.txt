@@ -18,3 +18,4 @@ C:\Users\DUNG\Desktop\MenShoesStore\BL.test\obj\Debug\netcoreapp2.0\BL.test.Asse
 C:\Users\DUNG\Desktop\MenShoesStore\BL.test\obj\Debug\netcoreapp2.0\BL.test.AssemblyInfo.cs
 C:\Users\DUNG\Desktop\MenShoesStore\BL.test\obj\Debug\netcoreapp2.0\BL.test.dll
 C:\Users\DUNG\Desktop\MenShoesStore\BL.test\obj\Debug\netcoreapp2.0\BL.test.pdb
+C:\Users\DUNG\Desktop\MenShoesStore\BL.test\bin\Debug\netcoreapp2.0\ConnectionString.txt

@@ -5,7 +5,7 @@ namespace MSS_Persistence
     {
         public int Shoes_id{set; get;}
 
-        public Trademark TM{get;set;} = new Trademark();
+        public Trademark TM{get;set;}
 
         public string Shoes_name{set; get;}
 

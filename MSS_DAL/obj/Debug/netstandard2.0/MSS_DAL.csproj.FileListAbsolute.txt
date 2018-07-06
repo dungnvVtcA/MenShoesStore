@@ -31,3 +31,4 @@ C:\Users\DUNG\Desktop\MenShoesStore\MSS_DAL\obj\Debug\netstandard2.0\MSS_DAL.Ass
 C:\Users\DUNG\Desktop\MenShoesStore\MSS_DAL\obj\Debug\netstandard2.0\MSS_DAL.AssemblyInfo.cs
 C:\Users\DUNG\Desktop\MenShoesStore\MSS_DAL\obj\Debug\netstandard2.0\MSS_DAL.dll
 C:\Users\DUNG\Desktop\MenShoesStore\MSS_DAL\obj\Debug\netstandard2.0\MSS_DAL.pdb
+C:\Users\DUNG\Desktop\MenShoesStore\MSS_DAL\bin\Debug\netstandard2.0\ConnectionString.txt

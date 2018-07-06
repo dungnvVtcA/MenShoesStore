@@ -6,28 +6,41 @@ namespace MSS_DAL
 {
     public class ShoesDAL
     {
+        private MySqlConnection connection;
+
+        private MySqlDataReader reader;
+        public ShoesDAL()
+        {
+            connection = DBHelper.OpenConnection();
+        }
+
         public List<Shoes> GetAllShoes()
         {
-           lock (this)
-           {
-               string  query = "Select Shoes.Shoes_id ,Shoes.Shoes_name,Trademark.TM_id,Shoes.Color,Shoes.Material,Shoes.Price,Shoes.Size,Shoes.Manufacturers,Shoes.Amount,Shoes.Style from Shoes inner join Trademark on Shoes.TM_id = Trademark.TM_id;";
-           DBHelper.OpenConnection();
-           MySqlDataReader reader = DBHelper.ExecQuery(query);
-           List<Shoes> sh1 = new List<Shoes>();
-           while(reader.Read())
-           {
-                sh1.Add(GetShoes(reader));
-           }
-           reader.Close();
-           DBHelper.CloseConnection();
-           return sh1;
-           }
+            List<Shoes> sh1 = new List<Shoes>();
+            string  query = "Select Shoes.Shoes_id ,Shoes.Shoes_name,Trademark.TM_id,Shoes.Color,Shoes.Material,Shoes.Price,Shoes.Size,Shoes.Manufacturers,Shoes.Amount,Shoes.Style from Shoes inner join Trademark on Shoes.TM_id = Trademark.TM_id;";
+            if(connection.State == System.Data.ConnectionState.Closed){
+                connection.Open();
+            }
+                MySqlCommand cmd = new MySqlCommand(query, connection);
+                using(reader = cmd.ExecuteReader())
+                {
+                
+                    while(reader.Read())
+                    {
+                        sh1.Add(GetShoes(reader));
+                    }
+                    reader.Close();
+                }
+            connection.Close();
+            return sh1;
         }
+
         private static Shoes GetShoes(MySqlDataReader reader)
         {
             Shoes sh = new Shoes();
                 sh.Shoes_id = reader.GetInt32("Shoes_id");
                 sh.Shoes_name = reader.GetString("Shoes_name");
+                sh.TM =  new Trademark();
                 sh.TM.Trademark_id = reader.GetInt16("TM_id");
                 sh.Color = reader.GetString("Color");
                 sh.Material = reader.GetString("Material");
@@ -40,43 +53,23 @@ namespace MSS_DAL
         }
         public Shoes GetShoesById(int Shoes_id)
         {
-            
-            lock (this)
-            {
-                string  query = "Select Shoes.Shoes_id ,Shoes.Shoes_name,Trademark.TM_id,Shoes.Color,Shoes.Material,Shoes.Price,Shoes.Size,Shoes.Manufacturers,Shoes.Style,Shoes.Amount from Shoes inner join Trademark on Shoes.TM_id = Trademark.TM_id where Shoes.Shoes_id='"+Shoes_id+"';";
-            DBHelper.OpenConnection();
-            MySqlDataReader reader = DBHelper.ExecQuery(query);
-            Shoes sh = new Shoes();
-            if(reader.Read())
-            {
-                sh = GetShoes(reader);
-            
-
+             if(connection.State == System.Data.ConnectionState.Closed){
+                connection.Open();
             }
-            DBHelper.CloseConnection();
-
-            return sh;
-            }
-
-        }
-        public Shoes GetShoesByName(string Shoes_name)
-        {
-            
-            lock (this)
-            {
-                string  query = "Select Shoes.Shoes_id ,Shoes.Shoes_name,Trademark.TM_id,Shoes.Color,Shoes.Material,Shoes.Price,Shoes.Style,Shoes.Size,Shoes.Manufacturers,Shoes.Amount from Shoes inner join Trademark on Shoes.TM_id = Trademark.TM_id where Shoes.Shoes_Name='"+Shoes_name+"';";
-            DBHelper.OpenConnection();
-            MySqlDataReader reader = DBHelper.ExecQuery(query);
             Shoes sh = null;
+            string  query = "Select Shoes.Shoes_id ,Shoes.Shoes_name,Trademark.TM_id,Shoes.Color,Shoes.Material,Shoes.Price,Shoes.Size,Shoes.Manufacturers,Shoes.Style,Shoes.Amount from Shoes inner join Trademark on Shoes.TM_id = Trademark.TM_id where Shoes.Shoes_id='"+Shoes_id+"';";
+           
+            
+            MySqlCommand cmd = new MySqlCommand(query, connection);
+            reader = cmd.ExecuteReader();
+                
             if(reader.Read())
             {
                 sh = GetShoes(reader);
-
             }
-            reader.Close();
-            DBHelper.CloseConnection();
+            
+            connection.Close();
             return sh;
-            }
 
         }
     }

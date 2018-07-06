@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using MySql.Data.MySqlClient;
 
 namespace MSS_DAL
@@ -7,77 +8,55 @@ namespace MSS_DAL
     
     public class DBHelper
     {
-        private static MySqlConnection connection;
-        public static MySqlConnection GetConnection()
+        private static string CONNECTION_STRING = "server=localhost;user id=root;pwd=12345678;port=3306;database=MenShoes;Sslmode=none";
+        public static MySqlConnection OpenDefaultConnection()
         {
-            connection = new MySqlConnection
+            try{
+                MySqlConnection connection = new MySqlConnection
                 {
-                    ConnectionString = "server=localhost;user id=root;pwd=12345678;port=3306;database=MenShoes;sslmode=none;"
+                    ConnectionString = CONNECTION_STRING
                 };
-            return connection;
+                connection.Open();
+                return connection;
+            }catch{
+                return null;
+            }
         }
-        public static MySqlDataReader ExecQuery(string query)
-        {
-            MySqlCommand command = new MySqlCommand(query, connection);
-            MySqlDataReader reader = command.ExecuteReader();
-            
-            return reader;
-        }
-        
+
         public static MySqlConnection OpenConnection()
         {
-            if (connection == null)
-            {
-                GetConnection();
-            }
-            connection.Open();
-           
-            return connection;
-        }
-        public static void CloseConnection()
-        {
-            if (connection != null) 
-            {
-                connection.Close();
-            }
-        }
-        
-        public static bool ExecTransaction(List<string> queries)
-        {
-            bool result = true;
-            OpenConnection();
-            MySqlCommand command = connection.CreateCommand();
-            MySqlTransaction trans = connection.BeginTransaction();
-
-            command.Connection = connection;
-            command.Transaction = trans;
-
             try
             {
-                foreach (var query in queries)
+                if (CONNECTION_STRING == null)
                 {
-                    command.CommandText = query;
-                    command.ExecuteNonQuery();
-                    trans.Commit();
+                    using (FileStream fileStream = File.OpenRead("ConnectionString.txt"))
+                    {
+                        using (StreamReader reader = new StreamReader(fileStream))
+                        {
+                            CONNECTION_STRING = reader.ReadLine();
+                        }
+                    }
                 }
-                result = true;
+                return OpenConnection(CONNECTION_STRING);
             }
             catch
             {
-                result = false;
-                try
-                {
-                    trans.Rollback();
-                }
-                catch
-                {
-                }
+                return null;
             }
-            finally
-            {
-                CloseConnection();
+        }
+
+        public static MySqlConnection OpenConnection(string connectionString)
+        {
+            try{
+                MySqlConnection connection = new MySqlConnection
+                {
+                    ConnectionString = connectionString
+                };
+                connection.Open();
+                return connection;
+            }catch{
+                return null;
             }
-            return result;
         }
     }
 }

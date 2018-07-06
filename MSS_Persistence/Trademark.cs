@@ -8,5 +8,7 @@ namespace MSS_Persistence
         public string Name{set;get;}
 
         public string Origin{set;get;}
+
+        public Trademark(){}
     }
 }

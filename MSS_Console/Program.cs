@@ -6,115 +6,15 @@ using MySql.Data.MySqlClient;
 using MSS_Persistence;
 using System.Text;
 using System.Security;
+using System.Text.RegularExpressions;
 
-class Program {
+namespace MSS_Console
+{
+    class Program {
 
-    static void Main(String[] arg){
+    static void Main(String[] arg)
+    {
        
-        // MySqlConnection connection;
-        // connection = new MySqlConnection
-        //         {
-        //             ConnectionString = "server=localhost;user id=root;password=12345678;port=3306;database=MenShoes;SslMode=None"
-        //         };
-        // connection.Open();
-        // String usrname,pwd;
-        // Console.Write(" :");
-        // usrname = Console.ReadLine();
-        // pwd = Console.ReadLine();
-        // string query = "Select User_Password from Users where AccountName='"+usrname+"';";
-        
-        // MySqlCommand command = new MySqlCommand(query, connection);
-        // MySqlDataReader read = command.ExecuteReader();
-
-        // if(read.Read()){
-        //   String true_pwd = read.GetString("User_Password");
-        //   if(pwd == true_pwd)
-        //   {
-        //       Console.Write(" ddanwg nhap thanh cong");
-        //   }
-        //   else
-        //   {
-        //       Console.WriteLine(" sai me roi");
-        //   }
-        // }
-        // else
-        // {
-        //     Console.Write("User khong ton tai!");
-        // }
-        // read.Close();
-        // connection.Close();
-
-        // UserBl ubl = new  UserBl(); // cn đang nhập.
-        // User u = new User();
-        // u.AccountName = "Nguyenvandung";
-        // u.Password = "dung12345678";
-        
-        // var result = ubl.login(u.AccountName, u.Password);
-        // if(result == null)
-        // {
-        //     Console.WriteLine("Dang nhap that bai");
-        // }
-        // else 
-        // {
-        //     Console.WriteLine("dang nhap thanh cong");
-        //     if( result.Type == 1)
-        //     {
-        //         Console.Write("chao mung ad");
-        //     }else if(result.Type ==0)
-        //     {
-        //         Console.Write("chao mung khách hàng ");
-        //     }
-            
-        // }
-      
-        // create 
-
-        // OrderBL obl = new OrderBL();
-        // Orders order = new Orders();
-        // ShoesBL sbl = new ShoesBL();
-        // Shoes sh = new Shoes();
-        // order.Order_status = 1;
-        // order.user.User_id = result.User_id ;
-        // order.shoesList.Add(sbl.GetShoesById(3));
-        // order.shoesList[0].Amount =1;
-
-
-        // Console.WriteLine("Create Order: " + (obl.CreateOrder(order) ? "completed!" : "not complete!"));
-        
-        // DBHelper.CloseConnection();
-
-        // get shoes all
-        // MySqlConnection connection;
-        // connection = new MySqlConnection
-        //         {
-        //             ConnectionString = "server=localhost;user id=root;password=12345678;port=3306;database=MenShoes;SslMode=None"
-        //         };
-        // connection.Open();
-        // int Shoes_id;
-        // Shoes_id = Convert.ToInt32(Console.ReadLine());
-        // string  query = "select Shoes_id ,Shoes_name,TM_id,Color,Material,Price,Size,Manufacturers,Amount from Shoes where Shoes_id="+Shoes_id+";";
-        // MySqlCommand command = new MySqlCommand(query, connection);
-        // MySqlDataReader read = command.ExecuteReader();
-        // Shoes s = null;
-        // if(read.Read())
-        // {
-        //     s.Shoes_name = read.GetString("Shoes_name");
-        //     Console.Write(s.Shoes_name);
-        //     s.Amount = read.GetInt32("Amount");
-        //     Console.Write(s.Amount);
-        // }
-
-        // ShoesBL sbl = new ShoesBL();
-        // Shoes s = new Shoes();
-        // List<Shoes> lish = new List<Shoes>();
-        // lish = sbl.GetAllShoes();
-        // Console.Write(lish.Count);
-        // //
-        // OrderBL or = new OrderBL();
-        // List<Orders> lis = new List<Orders>();
-        // lis = or.GetAllOrder();
-        // Console.WriteLine(lis.Count);
-
         MENU menu = new MENU();
         menu.MainMENU();
 
@@ -127,12 +27,19 @@ class Program {
         }
     public class MENU
     {
-        User user = null;
+        User result = new User();
         UserBl ubl =new UserBl();
         private static int id ;
-
-        private static int i;
-        
+        private static bool validate(string str)
+        {
+                Regex regex = new Regex("[a-zA-Z0-9_]");
+                MatchCollection matchCollectionstr = regex.Matches(str);
+                if (matchCollectionstr.Count < str.Length)
+                {
+                    return false;
+                }
+                return true;
+        }
         private static short Menu(string title, string[] menu)
         {
             short choose = 0;
@@ -160,79 +67,157 @@ class Program {
             } while (choose <= 0 || choose > menu.Length);
             return choose;
         }
-        public void MainMENU()
+        public  void MainMENU()
         {
-            
-            while(true)
-            {
-                Console.Clear();
-                user = new User();
-                var result = ubl.login("Nguyenvandung","dung12345678");
-                id = result.User_id;
-
-                if( result != null)
+                while(true)
                 {
-                    Console.Write("Log In successful !");
-                    if(result.Type == 0)
+                    Console.Clear();
+                    Console.WriteLine("Vui long nhap dung");
+                    Console.Write("Nhap user :");
+                    string name = Console.ReadLine();
+                    Console.Write("Nhap password : ");
+                    string pass = GetConsolePassword();
+                    while ((validate(name) == false) || (validate(pass) == false))
                     {
-                        MenuCustomer();
-                        break;
-
-                    }else if( result.Type ==1)
-                    {
-                        
-                        MenuStaff();
-                        break;
+                        Console.Clear();
+                        Console.WriteLine("Vui long nhap dung ! ");
+                        Console.WriteLine(" ĐĂNG NHẬP");
+                        Console.Write("Nhập lại Username: ");
+                        name = Console.ReadLine();
+                        Console.Write("Nhập lại Password: ");
+                        pass = GetConsolePassword();
                     }
-                }
-                else 
-                {
-                    Console.Write("Username or password is incorrect, please enter again!");
-                    Console.ReadLine();
-                }
+                    result = ubl.login(name,pass);
+                    if( result != null   )
+                    {
+                        if(result.Type == 0)
+                        {
+                            id = result.User_id;
+                            MenuCustomer();
+                            break;
 
-            }
+                        }else if( result.Type ==1)
+                        {
+                            
+                            MenuStaff();
+                            break;
+                        }
+                    }
+
+                }
         }
         public static void MenuStaff()
         {
             OrderBL obl = new OrderBL();
+            int b = 0;
             var result = obl.GetAllOrder();
+            foreach (var or in result)
+            {
+                if(or.Order_status == 1)
+                {
+                    b++;
+                }
+            }
             while(true)
             {
                 Console.Clear();
-                int b = result.Count;
+                string line = "===================================\n";
+                Console.Write(line);
+                Console.Write("Men Shoes\n");
+                Console.Write(line);
                 Console.WriteLine("1.Browse orders({0})",b);
                 Console.WriteLine("2.The list of approved orders");
                 Console.WriteLine("3.Reload page");
                 Console.WriteLine("4.Exits");
-                // string[] mainMenu = { "Browse orders", "The list of approved orders", "Reload page" };
-                // while( mainChoose!= mainMenu.Length)
-                // {
-                //     Console.Clear();
-                //     mainChoose = Menu("Men Shoes Store ", mainMenu);
-                int choice = Convert.ToInt32(Console.ReadLine());
+                Console.Write(line);
+                Console.Write("You Choose :");
+                var choice = Console.ReadLine();
+                if(choice == " ")
+                {
+                    Console.ReadLine();
+                }
                 switch(choice)
                 {
-                    case 1 : MENU.BrowseOrders();
+                    case "1" : MENU.BrowseOrders();
                     break;
-                    case 2 :MENU.ListApprovedorders();
+                    case "2" :MENU.ListApprovedorders();
                     break;
-                    case 3 :MENU.Reload();
+                    case "3" :MENU.Reload();
                     break;
-                    case 4 :
+                    case "4" :
                     Environment.Exit(4);
                     break;
                     default :
                     break;
                 }
                 
+                
             }
         }
-        public static void BrowseOrders(){}
+        public static void BrowseOrders()
+        {
+            Console.Clear();
+            OrderBL obl = new OrderBL();
+            var list = obl.GetAllOrder();
+            foreach (var or in list)
+            {
+                if (or.Order_status == 1)
+                {
+                    string line = "============================================================================================";
+                    Console.WriteLine(line);
+                    Console.WriteLine(" Order_id        |   User_ID        |  Date                            |   Order Status  |");
+                    Console.WriteLine(line);
+                    foreach (var orders in list)
+                    {
+                        if( orders.Order_status == 1)
+                        {
+                            Console.WriteLine("{0,-20} {1,-20} {2,-29} {3}",orders.Order_id,orders.user.User_id,orders.Date_Order,orders.Order_status);
+                        }
+                        
+                    }
+                    Console.WriteLine(line);
+                    Console.Write("Nhap id can duyet : \n");
+                    int id = Convert.ToInt32(Console.ReadLine());
+                    obl.update(id);
+                    Console.Write("ban muon tiep tuc duyet k !");
+                    var choice = Console.ReadLine();
+                    if( choice == "n")
+                    {
+                        break;
+                    }
 
-        public static void ListApprovedorders(){}
+                }
+            }
 
-        public static void Reload(){}
+        }
+
+        public static void ListApprovedorders()
+        
+        {
+            Console.Clear();
+            OrderBL obl = new OrderBL();
+            var list = obl.GetAllOrder();
+            string line = "============================================================================================";
+            Console.WriteLine(line);
+            Console.WriteLine(" Order_id        |   User_ID        |  Date                            |   Order Status  |");
+            Console.WriteLine(line);
+            foreach (var orders in list)
+            {
+                if( orders.Order_status == 0)
+                {
+                    Console.WriteLine("{0,-20} {1,-20} {2,-29} {3}",orders.Order_id,orders.user.User_id,orders.Date_Order,orders.Order_status);
+                }
+                        
+            }
+            Console.WriteLine(line);
+            Console.Write("\n    Press Enter key to back menu... !");
+            Console.ReadLine();
+            
+        }
+
+        public static void Reload(){
+            MenuStaff();
+        }
         public static  void MenuCustomer()
         {
             MENU menu = new MENU();
@@ -319,61 +304,51 @@ class Program {
             OrderBL obl = new OrderBL();
             Orders order = new Orders();
             ShoesBL sbl = new ShoesBL();
+            order.shoesList = new List<Shoes>();
+            int count1 = 0;
             Shoes sh = new Shoes();
             order.Order_status = 1;
+            order.user = new User();
             order.user.User_id =  id;
             var result = sbl.GetAllShoes();
+            int count = 0;
+            int index = 0;
             if( result != null)
             {
-                    Console.Write("- iD: ");
-                    while (true)
+                while(true)
+                {
+                    Console.WriteLine("Nhap Shoes_id : ");
+                    int Sh_id = Convert.ToInt32(Console.ReadLine());
+                    for (int i = 0; i < result.Count; i++)
                     {
-                        try
-                        {
-                            int sh_id = Convert.ToInt32(Console.ReadLine());
-                            for( i = 0 ; i < result.Count ; i++)
-                            {
-                                if( sh_id != result[i].Shoes_id )
-                                {
-                                    throw (new valueexception("Mã khong ton tai, mời bạn nhập lại: "));
-                                }
-                                else if( sh_id == result[i].Shoes_id)
-                                {
-                                    order.shoesList.Add(sbl.GetShoesById(sh_id));
-                                    break;
-                                }
-                            }
+                        if(result[i].Shoes_id == Sh_id){
+                            index = i;
+                            count++;
                         }
-                        catch(valueexception e)
-                        {
-                            Console.Write(e.Message);
-                            continue;
-                        }
-                        catch
-                        {
-                            Console.Write("Vui long nhap ID hop le: ");
-                            continue;
-                        }
+                    }
+                    if (count != 0)
+                    {
+                        order.shoesList.Add(sbl.GetShoesById(Sh_id));
                         break;
                     }
-                    Console.Write("Amount: ");
+                }   
                     while (true)
                     {
                         try
                         {
-                            int amount = Convert.ToInt32(Console.ReadLine());
-                            for( i = 0 ; i < result.Count;i++)
-                            {
-                                if( amount > result[i].Amount )
+                                Console.Write("Input  Amount: ");
+                                int amount = Convert.ToInt32(Console.ReadLine());
+
+                                if( amount > result[index].Amount )
                                 {
-                                    Console.WriteLine("So luong con : {0}",result[i].Amount);
-                                    throw (new valueexception("So luong chi con :  , mời bạn nhập lại: "));
-                                }else if( 0 < amount || amount <= result[i].Amount)
+                                    Console.WriteLine("So luong con : {0}",result[index].Amount);
+                                    throw (new valueexception("So luong khong du , mời bạn nhập lại: "));
+                                }else if( 0 < amount || amount <= result[index].Amount)
                                 {
-                                    order.shoesList[0].Amount = amount;
+                                    order.shoesList[count1].Amount = amount;
+                                    count1++;
                                     break;
                                 }
-                            }
                         }
                         catch(valueexception e)
                         {
@@ -387,6 +362,8 @@ class Program {
                         }
                         break;
                     }
+
+
                     Console.WriteLine("Create Order: " + (obl.CreateOrder(order) ? "completed!" : "not complete!"));
                     Console.Write("Nhan enter !");
                     Console.ReadLine();
@@ -403,7 +380,7 @@ class Program {
         {
             Console.Clear();
             OrderBL obl = new OrderBL();
-            var list = obl.GetAllOrder();
+            var list = obl.GetAllOrderByIDUser(id);
             string line = "============================================================================================";
             Console.WriteLine(line);
             Console.WriteLine(" Order_id        |   User_ID        |  Date                            |   Order Status  |");
@@ -419,4 +396,6 @@ class Program {
             
         }
     }
+}
+
 }

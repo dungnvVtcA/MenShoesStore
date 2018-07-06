@@ -19,5 +19,7 @@ namespace MSS_Persistence
         public string Password{set; get;}
 
         public int Type{get;set;}
+
+        public bool login{get;set;}
     }
 }

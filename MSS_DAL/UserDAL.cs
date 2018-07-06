@@ -9,36 +9,35 @@ namespace MSS_DAL
 {
     public class UserDAL
     {
+        private MySqlConnection connection;
+        public UserDAL()
+        {
+            connection = DBHelper.OpenConnection();
+
+        }
         public User Login(string id , string pass)
         {
-            lock (this)
+            string query = "Select User_id,User_Type from Users where AccountName='"+ id +"' and User_Password ='"+pass+"';";
+            if( connection.State == System.Data.ConnectionState.Closed)
             {
-                string query = "Select User_id, User_Password ,User_Type from Users where AccountName='"+ id +"';";
-            DBHelper.OpenConnection();
-            MySqlDataReader reader = DBHelper.ExecQuery(query);
-                
+                connection.Open();
+            }
+            MySqlCommand cmd = new MySqlCommand(query,connection);
+            MySqlDataReader reader = cmd.ExecuteReader();
+            
             User u = null;
             if(reader.Read())
             {  
                 u = new User();
+                
                 u.User_id = reader.GetInt32("User_id");
-                u.Type  =  reader.GetInt32("User_Type");
-                u.Password = reader.GetString("User_Password");
-                if(pass == u.Password)
-                {
-                    DBHelper.CloseConnection();
-                    return u;
-                }
-                else if( pass != u.Password)
-                {
-                    DBHelper.CloseConnection();
-                    return null;
-                }
+                u.Type  =  reader.GetInt32("User_Type");  
+                return u;
+               
             }
             reader.Close();
-            DBHelper.CloseConnection();
+            connection.Close();
             return u;
-            }
         }
        
     }

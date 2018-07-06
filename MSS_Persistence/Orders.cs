@@ -9,10 +9,17 @@ namespace MSS_Persistence
 
         public DateTime Date_Order{set;get;}
 
-        public User user{set; get;} = new User();
+        public User user{set; get;}
 
         public int Order_status{set;get;}
 
-        public List<Shoes> shoesList{set;get;} = new List<Shoes>();
+        public List<Shoes> shoesList{set;get;}
+
+        public Orders(){
+            user = new User();
+            shoesList = new List<Shoes>();
+        }
+
+        
     }
 }

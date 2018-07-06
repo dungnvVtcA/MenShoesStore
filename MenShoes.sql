@@ -95,8 +95,7 @@ values
 ('Nguyen Van dung','Nguyenvandung','dung12345678',1);
 
 select *from Users;
-insert into Orders( User_id, Or_Status) values
-( 1, 1);
+
 
 insert into Trademark(TM_name,Origin) values
 
@@ -121,7 +120,6 @@ insert into Shoes(TM_id,Price,Shoes_name,Material,Size,Color,Manufacturers,Style
 (3,189000.00,'CV CH2 cao cổ','vải tơ thô',40,'trắng','công ty cổ phần  HAPULICO','Công sở',3),
 (3,189000.00,'CV CH2 cao cổ','vải tơ thô',41,'đen','công ty cổ phần  HAPULICO','Công sở',8);
  select *from Shoes;
- insert into OrderDetail(Or_ID, Shoes_id ) value (1,1);
 select *from orderdetail;
  select LAST_INSERT_ID();
  
