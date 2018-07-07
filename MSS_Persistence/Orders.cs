@@ -12,8 +12,10 @@ namespace MSS_Persistence
         public User user{set; get;}
 
         public int Order_status{set;get;}
+       
 
-        public List<Shoes> shoesList{set;get;}
+        private List<Shoes> ShoesList;
+        public List<Shoes> shoesList { get => ShoesList; set => ShoesList = value; }
 
         public Orders(){
             user = new User();

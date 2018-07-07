@@ -24,6 +24,10 @@ namespace MSS_Bl
         {
             return or.GetOrders(1, new Orders{user = new User{User_id=user_id}});
         }
+        public Orders GetOrderDetailsByID(int id)
+        {
+            return or.GetOrderDetailsByID(id);
+        }
         
     }
 }

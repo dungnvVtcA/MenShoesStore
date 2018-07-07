@@ -17,7 +17,7 @@ namespace MSS_DAL
         public List<Shoes> GetAllShoes()
         {
             List<Shoes> sh1 = new List<Shoes>();
-            string  query = "Select Shoes.Shoes_id ,Shoes.Shoes_name,Trademark.TM_id,Shoes.Color,Shoes.Material,Shoes.Price,Shoes.Size,Shoes.Manufacturers,Shoes.Amount,Shoes.Style from Shoes inner join Trademark on Shoes.TM_id = Trademark.TM_id;";
+            string  query = "Select Shoes.Shoes_id ,Shoes.Shoes_name,Trademark.TM_id,Trademark.TM_name,Trademark.Origin,Shoes.Color,Shoes.Material,Shoes.Price,Shoes.Size,Shoes.Manufacturers,Shoes.Style,Shoes.Amount from Shoes inner join Trademark on Shoes.TM_id = Trademark.TM_id ;";
             if(connection.State == System.Data.ConnectionState.Closed){
                 connection.Open();
             }
@@ -42,6 +42,8 @@ namespace MSS_DAL
                 sh.Shoes_name = reader.GetString("Shoes_name");
                 sh.TM =  new Trademark();
                 sh.TM.Trademark_id = reader.GetInt16("TM_id");
+                sh.TM.Name = reader.GetString("TM_name");
+                sh.TM.Origin = reader.GetString("Origin");
                 sh.Color = reader.GetString("Color");
                 sh.Material = reader.GetString("Material");
                 sh.Price = reader.GetDecimal("Price");
@@ -57,7 +59,7 @@ namespace MSS_DAL
                 connection.Open();
             }
             Shoes sh = null;
-            string  query = "Select Shoes.Shoes_id ,Shoes.Shoes_name,Trademark.TM_id,Shoes.Color,Shoes.Material,Shoes.Price,Shoes.Size,Shoes.Manufacturers,Shoes.Style,Shoes.Amount from Shoes inner join Trademark on Shoes.TM_id = Trademark.TM_id where Shoes.Shoes_id='"+Shoes_id+"';";
+            string  query = "Select Shoes.Shoes_id ,Shoes.Shoes_name,Trademark.TM_id,Trademark.TM_name,Trademark.Origin,Shoes.Color,Shoes.Material,Shoes.Price,Shoes.Size,Shoes.Manufacturers,Shoes.Style,Shoes.Amount from Shoes inner join Trademark on Shoes.TM_id = Trademark.TM_id where Shoes.Shoes_id='"+Shoes_id+"';";
            
             
             MySqlCommand cmd = new MySqlCommand(query, connection);
@@ -65,6 +67,7 @@ namespace MSS_DAL
                 
             if(reader.Read())
             {
+                sh= new Shoes();
                 sh = GetShoes(reader);
             }
             

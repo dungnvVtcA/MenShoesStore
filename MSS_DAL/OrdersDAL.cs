@@ -206,36 +206,39 @@ namespace MSS_DAL
             
             return GetOrders(cmd);
         }
-        public List<Orders> GetOrderDetailsByID(int id)
+        public Orders GetOrderDetailsByID(int id)
         {
             if(connection.State == System.Data.ConnectionState.Closed){
                 connection.Open();
             }
-            List<Orders> lisOr = new List<Orders>();
-            string query = "Select Orders.Or_ID ,Orders.User_id,Orders.Or_Date,Shoes.Shoes_name,OrderDetail.Amount,OrderDetail.Unitprice,Orders.Or_Status from Orders inner join OrderDetail on Orders.Or_ID = OrderDetail.Or_ID inner join Shoes on Orderdetail.Shoes_id = Shoes.Shoes_id where OrderDetail.Or_ID="+id+";";
+            string query = "Select Orders.Or_ID ,Users.User_id,Users.Phone,Users.User_name,Users.User_Address,Users.Email,Orders.Or_Date,Shoes.Shoes_name,Shoes.Size,OrderDetail.Amount,OrderDetail.Unitprice,Orders.Or_Status from Orders inner join Users on Orders.User_id = Users.User_id inner join OrderDetail on Orders.Or_ID = OrderDetail.Or_ID inner join Shoes on Orderdetail.Shoes_id = Shoes.Shoes_id where Orders.Or_ID="+id+";";
             Orders or = new Orders();
+            or.shoesList = new List<Shoes>();
             MySqlCommand cmd = new MySqlCommand(query, connection);
             reader = cmd.ExecuteReader();
                 
-            if(reader.Read())
+            while(reader.Read())
             {
                 or.Order_id = reader.GetInt32("Or_ID");
                 or.user = new User();
                 or.user.User_id = reader.GetInt32("User_id");
+                or.user.User_name = reader.GetString("User_name");
+                or.user.Phone = reader.GetInt32("Phone");
+                or.user.Address = reader.GetString("User_Address");
+                or.user.Email = reader.GetString("Email");
                 or.Date_Order = reader.GetDateTime("Or_Date");
                 or.Order_status = reader.GetInt32("Or_Status");
                 Shoes s = new Shoes();
-                or.shoesList = new List<Shoes>();
                 s.Shoes_name = reader.GetString("Shoes_name");
                 s.Amount = reader.GetInt32("Amount");
                 s.Price = reader.GetDecimal("Unitprice");
+                s.Size = reader.GetInt32("Size");
                 or.shoesList.Add(s);
-                lisOr.Add(or);
             }
             reader.Close();
             
             connection.Close();
-            return lisOr;
+            return or;
         }
 
     }
