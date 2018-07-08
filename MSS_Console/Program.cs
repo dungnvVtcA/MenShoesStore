@@ -87,9 +87,10 @@ namespace MSS_Console
                 switch (choose)
                 {
                     case "1" : 
+                    Console.Clear();
                     while(true)
                     {
-                        Console.Clear();
+                        
                         Console.Write("---------      LOG IN      ---------\n");
                         Console.Write("-Username :");
                         string name = Console.ReadLine();
@@ -99,6 +100,7 @@ namespace MSS_Console
                         {
                             Console.Clear();
                             Console.WriteLine(".  .  .Username or password wrong, please re-enter ! ");
+                            Console.Write("---------      LOG IN      ---------\n");
                             Console.Write("-Username: ");
                             name = Console.ReadLine();
                             Console.Write("-Password: ");
@@ -119,6 +121,9 @@ namespace MSS_Console
                                 MenuStaff();
                                 break;
                             }
+                        }else{
+                            Console.Clear();
+                            Console.WriteLine(".  .  .Username or password wrong, please re-enter ! ");
                         }
 
                     }
@@ -153,7 +158,7 @@ namespace MSS_Console
                 Console.WriteLine("1.Browse orders({0})",b);
                 Console.WriteLine("2.The list of approved orders");
                 Console.WriteLine("3.Reload page");
-                Console.WriteLine("4.Exits");
+                Console.WriteLine("4.Log Out");
                 Console.Write(line);
                 Console.Write("You Choose :");
                 var choice = Console.ReadLine();
@@ -170,7 +175,8 @@ namespace MSS_Console
                     case "3" :MENU.Reload();
                     break;
                     case "4" :
-                    Environment.Exit(4);
+                    MENU m = new MENU();
+                    m.MainMENU();
                     break;
                     default :
                     break;
@@ -179,16 +185,16 @@ namespace MSS_Console
                 
             }
         }
-        public static void BrowseOrders()
+        public static bool BrowseOrders()
         {
             Console.Clear();
             int count = 1;
             OrderBL obl = new OrderBL();
             var list = obl.GetAllOrder();
-            foreach (var or in list)
-            {
-                if (or.Order_status == 1)
-                {
+            // foreach (var or in list)
+            // {
+            //     if (or.Order_status == 1)
+            //     {
                     string line = "============================================================================================";
                     Console.WriteLine(line);
                     Console.WriteLine(" Order_id        |   User_ID        |  Date                            |   Order Status  |");
@@ -238,6 +244,7 @@ namespace MSS_Console
                                     {
                                         obl.update(or_id);
                                         Console.WriteLine("...Browse  Order successful!");
+                                        
                                     }
                                 }
                             }
@@ -257,12 +264,17 @@ namespace MSS_Console
                         string choice = Console.ReadLine();
                         if( choice == "n")
                         {
+                            
                             break;
+                            
                         }
                     
                     }
-                }
-            }
+                    
+//}
+
+            //}
+            return true;
 
         }
 
@@ -302,7 +314,7 @@ namespace MSS_Console
             {
                 Console.Clear();
                 short mainChoose = 0;
-                string[] mainMenu = { "Display list shoes", "Crete Orders ", "Display list orders", "Exit" };
+                string[] mainMenu = { "Display list shoes", "Crete Orders ", "Display list orders", "Log Out" };
                 while( mainChoose!= mainMenu.Length)
                 {
                     Console.Clear();
@@ -316,7 +328,7 @@ namespace MSS_Console
                         case 3 : menu.DisplayListOrders();
                         break;
                         case 4 :
-                        Environment.Exit(4);
+                        menu.MainMENU();
                         break;
                         default :
                         break;
@@ -417,7 +429,7 @@ namespace MSS_Console
             Console.ReadLine();
         }
         
-        public  void CreateOrders()
+        public  bool CreateOrders()
         {
             Console.Clear();
             OrderBL obl = new OrderBL();
@@ -507,13 +519,16 @@ namespace MSS_Console
                 Console.WriteLine("Create Order: " + (obl.CreateOrder(order) ? "completed!" : "not complete!"));
                 Console.Write("Nhan enter !");
                 Console.ReadLine();
+                
             }
             else if( result == null)
             {
                 Console.Write("Shoes not exists!");
                 Console.ReadLine();
                 MenuCustomer();
+                return false;
             }
+            return true;
             
         }
         public  void  DisplayListOrders()

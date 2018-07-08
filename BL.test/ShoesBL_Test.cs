@@ -1,34 +1,36 @@
-using System ;
+using System;
 using Xunit;
-using MSS_DAL;
+using MSS_Bl;
+using MySql.Data.MySqlClient;
 using MSS_Persistence;
 using System.Collections.Generic;
 
-namespace DAL.test
+
+namespace BL.test
 {
-    public class ShoesTest
+    public class ShoesBL_Test
     {
-        ShoesDAL shdal = new ShoesDAL();
+        ShoesBL sbl = new ShoesBL();
+        
+        
         [Fact]
         public void GetAllShoes_test()
         {
-            List<Shoes> listShoes = shdal.GetAllShoes();
+            List<Shoes> listShoes = sbl.GetAllShoes();
             Assert.NotNull(listShoes);
         }
         [Fact]
         public void GetShoesById_Test()
         {
-            Shoes sh = shdal.GetShoesById(1);
+            Shoes sh = sbl.GetShoesById(1);
             Assert.NotNull(sh);                                                                             
         }
-         [Fact]
+        [Fact]
         public void GetShoesById_TestNULL()
         {
-            Shoes sh = shdal.GetShoesById(100);
+            Shoes sh = sbl.GetShoesById(100);
             Assert.Null(sh);                                                                             
         }
-
-
 
     }
 }
