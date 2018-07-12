@@ -81,7 +81,7 @@ namespace MSS_DAL
                     reader.Close();
 
                     //insert to orderdetail
-                    cmd.CommandText = "insert into OrderDetail(Or_ID,Shoes_id,Amount,Unitprice,OD_status) values("+orders.Order_id+", "+shoes.Shoes_id+","+shoes.Amount+","+shoes.Price*shoes.Amount+"," + orders.Order_status +");";
+                    cmd.CommandText = "insert into OrderDetail(Or_ID,Shoes_id,Amount,Unitprice,OD_status) values("+orders.Order_id+", "+shoes.Shoes_id+","+shoes.Amount+","+shoes.Price+"," + orders.Order_status +");";
                     cmd.ExecuteNonQuery();
                     // update so luong
                     cmd.CommandText = "update Shoes set Amount=Amount-@quantity where Shoes_id=" + shoes.Shoes_id + ";";
@@ -177,6 +177,7 @@ namespace MSS_DAL
             reader = cmd.ExecuteReader();
             while(reader.Read())
             {
+                
                 list.Add(GetOrder(reader));
             }
             reader.Close();
@@ -200,6 +201,10 @@ namespace MSS_DAL
                 query = @"select *from Orders where User_id = @user_id;";
                 
                 cmd.Parameters.AddWithValue("@user_id",or.user.User_id);
+                break;
+                case 2 :
+                query =  @"select *from Orders where  Or_Status = @status;";
+                cmd.Parameters.AddWithValue("@status", or.Order_status);
                 break;
             }
             cmd.CommandText = query;
@@ -235,6 +240,7 @@ namespace MSS_DAL
                 s.Size = reader.GetInt32("Size");
                 or.shoesList.Add(s);
             }
+            
             reader.Close();
             
             connection.Close();

@@ -13,7 +13,6 @@ namespace MSS_Persistence
 
         public int Order_status{set;get;}
        
-
         private List<Shoes> ShoesList;
         public List<Shoes> shoesList { get => ShoesList; set => ShoesList = value; }
 

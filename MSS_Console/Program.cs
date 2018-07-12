@@ -98,13 +98,22 @@ namespace MSS_Console
                         string pass = GetConsolePassword();
                         while ((validate(name) == false) || (validate(pass) == false))
                         {
-                            Console.Clear();
+                            Console.ForegroundColor = ConsoleColor.Red;
                             Console.WriteLine(".  .  .Username or password wrong, please re-enter ! ");
+                            Console.ForegroundColor = ConsoleColor.Gray;
+                            Console.Write("You want to keep signing in?(y/n) :");
+                            string chon = Console.ReadLine();
+                            if(chon == "n")
+                            {
+                                MainMENU();
+                            }
+                            Console.Clear();
                             Console.Write("---------      LOG IN      ---------\n");
                             Console.Write("-Username: ");
                             name = Console.ReadLine();
                             Console.Write("-Password: ");
                             pass = GetConsolePassword();
+
                         }
                         result = ubl.login(name,pass);
                         if( result != null   )
@@ -122,8 +131,16 @@ namespace MSS_Console
                                 break;
                             }
                         }else{
-                            Console.Clear();
+                            Console.ForegroundColor = ConsoleColor.Red;
                             Console.WriteLine(".  .  .Username or password wrong, please re-enter ! ");
+                            Console.ForegroundColor = ConsoleColor.Gray;
+                            Console.Write("You want to keep signing in?(y/n) :");
+                            string chon = Console.ReadLine();
+                            if(chon == "n")
+                            {
+                                break;
+                            }
+                            Console.Clear();
                         }
 
                     }
@@ -188,23 +205,20 @@ namespace MSS_Console
         public static bool BrowseOrders()
         {
             Console.Clear();
-            int count = 1;
+            string line1 = "------------------------------------------------------------------------------------\n";
+            Decimal a = 0;
             OrderBL obl = new OrderBL();
-            var list = obl.GetAllOrder();
-            // foreach (var or in list)
-            // {
-            //     if (or.Order_status == 1)
-            //     {
+            var list = obl.GetAllOrderbyStatus(1);
+            if(list.Count!= 0)
+            {
                     string line = "============================================================================================";
                     Console.WriteLine(line);
-                    Console.WriteLine(" Order_id        |   User_ID        |  Date                            |   Order Status  |");
+                    Console.WriteLine(" Order_id        |   User_ID        |  Date                         |   Order Status  |");
                     Console.WriteLine(line);
                     foreach (var orders in list)
                     {
-                        if( orders.Order_status == 1)
-                        {
                             Console.WriteLine("{0,-20} {1,-20} {2,-29} {3}",orders.Order_id,orders.user.User_id,orders.Date_Order,orders.Order_status);
-                        }
+                        
                         
                     }
                     Console.WriteLine(line);
@@ -212,15 +226,17 @@ namespace MSS_Console
                         Console.Write("Enter the ID to view the customer's order details: ");
                         while (true)
                         {
+                            
                             try
                             {
+                                
                                 int or_id = Convert.ToInt32(Console.ReadLine());
                                 var orderdetail = obl.GetOrderDetailsByID(or_id);
-                                if(orderdetail == null)
+                                if(orderdetail != null && orderdetail.Order_status == 0 )
                                 {
-                                    throw new valueexception("Not find Order_ID,please re-enter : ");
+                                    throw new valueexception("Order  does not exist or has been approved,please re-enter : ");
                                 }
-                                else if(orderdetail != null)
+                                else if(orderdetail != null && orderdetail.Order_status == 1)
                                 {
                                     Console.Clear();
                                     Console.WriteLine("          Order Detail of Customer Information        ");
@@ -230,14 +246,17 @@ namespace MSS_Console
                                     Console.WriteLine("-Customer phone    : {0}",orderdetail.user.Phone);
                                     Console.WriteLine("-Customer Address  : {0}",orderdetail.user.Address);
                                     Console.WriteLine("-Customer Email    : {0}",orderdetail.user.Email);
+                                    Console.Write(line1);
+                                    Console.Write(" Product name      |  Unitprice          |  Amount          |  Size     |     Total          \n");
                                     foreach (var order in orderdetail.shoesList)
                                     {
-                                        Console.WriteLine("-Product name {0}    : {1}",count,order.Shoes_name);
-                                        count++;
-                                        Console.WriteLine("-Amonut            : {0}",order.Amount);
-                                        Console.WriteLine("-Size              : {0}",order.Size);
-                                        Console.WriteLine("-Unit price        : {0}vndong",order.Price);
+                                        Decimal b = order.Price*order.Amount;
+                                        Console.WriteLine("{0,-20} {1,-26} {2,-15} {3,-10} {4}",order.Shoes_name,order.Price,order.Amount,order.Size,b);
+                                        a +=b;
+                                    
                                     }
+                                    Console.Write(line1);
+                                    Console.WriteLine("-The total amount payable                                                  {0}",a);
                                     Console.WriteLine("Do you want to Browse this Order?(y/n)");
                                     string choice3 = Console.ReadLine();
                                     if( choice3 =="y")
@@ -260,6 +279,7 @@ namespace MSS_Console
                             }
                             break;
                         }
+                        
                         Console.Write("You want to browse order?(y/n)");
                         string choice = Console.ReadLine();
                         if( choice == "n")
@@ -270,10 +290,15 @@ namespace MSS_Console
                         }
                     
                     }
-                    
-//}
-
-            //}
+                return true;
+            }
+            else if(list.Count == 0)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("The orders has been processed!");
+                Console.ForegroundColor = ConsoleColor.Gray;
+                Console.ReadLine();
+            }
             return true;
 
         }
@@ -283,22 +308,33 @@ namespace MSS_Console
         {
             Console.Clear();
             OrderBL obl = new OrderBL();
-            var list = obl.GetAllOrder();
-            string line = "============================================================================================";
-            Console.WriteLine(line);
-            Console.WriteLine(" Order_id        |   User_ID        |  Date                            |   Order Status  |");
-            Console.WriteLine(line);
-            foreach (var orders in list)
+            var list = obl.GetAllOrderbyStatus(0);
+            if( list.Count != 0)
             {
-                if( orders.Order_status == 0)
+                 string line = "============================================================================================";
+                Console.WriteLine(line);
+                Console.WriteLine(" Order_id        |   User_ID        |            Date                  |   Order Status  |");
+                Console.WriteLine(line);
+                foreach (var orders in list)
                 {
-                    Console.WriteLine("{0,-20} {1,-20} {2,-29} {3}",orders.Order_id,orders.user.User_id,orders.Date_Order,orders.Order_status);
+                    if( orders.Order_status == 0)
+                    {
+                        Console.WriteLine("{0,-20} {1,-20} {2,-33} {3}",orders.Order_id,orders.user.User_id,orders.Date_Order,orders.Order_status);
+                    }
+                            
                 }
-                        
+                Console.WriteLine(line);
+                Console.Write("\n    Press Enter key to back menu... !");
+                Console.ReadLine();
             }
-            Console.WriteLine(line);
-            Console.Write("\n    Press Enter key to back menu... !");
-            Console.ReadLine();
+            else if(list.Count == 0)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Empty list, no invoices processed...!");
+                Console.ForegroundColor = ConsoleColor.Gray;
+                Console.ReadLine();
+
+            }
             
         }
 
@@ -442,7 +478,6 @@ namespace MSS_Console
             order.user = new User();
             order.user.User_id =  id;
             var result = sbl.GetAllShoes();
-            int count = 0;
             int index = 0;
             if( result != null)
             {
@@ -450,18 +485,21 @@ namespace MSS_Console
                 {
                     while(true)
                     { 
+                        int count = 0;
                         Console.WriteLine("Nhap Shoes_id : ");
                         try{
                             
                             int Sh_id = Convert.ToInt32(Console.ReadLine());
                             for (int i = 0; i < result.Count; i++)
                             {
-                                if(result[i].Shoes_id == Sh_id)
+                                if(Sh_id == result[i].Shoes_id)
                                 {
-                                    index = i;
                                     order.shoesList.Add(sbl.GetShoesById(Sh_id));
+                                    index = i;
                                     count++;
                                 }
+                            
+                                
                             }
                             if (count ==0)
                             {   
@@ -485,11 +523,18 @@ namespace MSS_Console
                                     Console.Write("Input  Amount: ");
                                     int amount = Convert.ToInt32(Console.ReadLine());
 
-                                    if( amount > result[index].Amount )
+                                    if( amount > result[index].Amount && result[index].Amount >0 )
                                     {
                                         Console.WriteLine("So luong con : {0}",result[index].Amount);
                                         throw (new valueexception("So luong khong du , mời bạn nhập lại: "));
-                                    }else if( 0 < amount || amount <= result[index].Amount)
+                                    }
+                                    // else if((amount >result[index].Amount && result[index].Amount == 0) || (amount == result[index].Amount && result[index].Amount == 0) )
+                                    // {
+                                    //     Console.WriteLine("so luong da het vui long chon sp khac");
+                                    //     Console.ReadLine();
+                                    //     break;
+                                    // }
+                                    else if( 0 < amount || amount <= result[index].Amount)
                                     {
                                         order.shoesList[count1].Amount = amount;
                                         count1++;
@@ -534,66 +579,91 @@ namespace MSS_Console
         public  void  DisplayListOrders()
         {
             Console.Clear();
-            int count = 1;
+            decimal a = 0;
+            string line1 = "------------------------------------------------------------------------------------\n";
             OrderBL obl = new OrderBL();
             var list = obl.GetAllOrderByIDUser(id);
-            string line = "============================================================================================";
-            Console.WriteLine(line);
-            Console.WriteLine(" Order_id        |  Date                            |   Order Status  |");
-            Console.WriteLine(line);
-            foreach (var orders in list)
+            if(list.Count !=0)
             {
-                Console.WriteLine("{0,-20}  {1,-29} {2}",orders.Order_id,orders.Date_Order,orders.Order_status);
-                
-            }
-            Console.WriteLine(line);
-            Console.Write("Do you want to see Order details?(y/n)");
-            string choice = Console.ReadLine();
-            if(choice == "y" )
-            {
-                Console.Write("Input  Order_ID: ");
-                while (true)
+                string line = "============================================================================================";
+                Console.WriteLine(line);
+                Console.WriteLine(" Order_id        |  Date                            |   Order Status  |");
+                Console.WriteLine(line);
+                foreach (var orders in list)
                 {
-                    try
+                    Console.WriteLine("{0,-24}  {1,-33} {2}",orders.Order_id,orders.Date_Order,orders.Order_status);
+                    
+                }
+                Console.WriteLine(line);
+                Console.Write("Do you want to see Order details?(y/n)");
+                string choice = Console.ReadLine();
+                if(choice == "y" )
+                {
+                    Console.Write("Input  Order_ID: ");
+                    while (true)
                     {
-                        int or_id = Convert.ToInt32(Console.ReadLine());
-                        var orderdetail = obl.GetOrderDetailsByID(or_id);
-                        if(orderdetail == null)
+                        try
                         {
-                            throw new valueexception("Not find Order_ID,please re-enter : ");
-                        }
-                        else if(orderdetail != null)
-                        {
-                            Console.Clear();
-                            Console.WriteLine("          Order Detail Information        ");
-                            Console.WriteLine("-ID                : {0}",orderdetail.Order_id);
-                            Console.WriteLine("-Order date        : {0}",orderdetail.Date_Order);
-                            foreach (var order in orderdetail.shoesList)
+                            int or_id = Convert.ToInt32(Console.ReadLine());
+                            var orderdetail = obl.GetOrderDetailsByID(or_id);
+                            if(orderdetail == null)
                             {
-                                Console.WriteLine("-Product name {0}    : {1}",count,order.Shoes_name);
-                                count++;
-                                Console.WriteLine("-Amonut            : {0}",order.Amount);
-                                Console.WriteLine("-Size              : {0}",order.Size);
-                                Console.WriteLine("-Unit price        : {0}vndong",order.Price);
+                                throw new valueexception("Not find Order_ID,please re-enter : ");
+                            }
+                            else if(orderdetail != null)
+                            {
+                                Console.Clear();
+                                Console.WriteLine("SHOES STORE");
+                                Console.WriteLine("          Shoe Sales Invoice        ");
+                                Console.WriteLine("-Order date        : {0}",orderdetail.Date_Order);
+                                Console.WriteLine("-Order ID          : {0}",orderdetail.Order_id);
+                                Console.Write(line1);
+                                Console.Write(" Product name      |  Unitprice          |  Amount          |  Size     |     Total          \n");
+                                foreach (var order in orderdetail.shoesList)
+                                {
+                                    Decimal b = order.Price*order.Amount;
+                                    Console.WriteLine("{0,-20} {1,-26} {2,-15} {3,-10} {4}",order.Shoes_name,order.Price,order.Amount,order.Size,b);
+                                    a +=b;
+                                    
+                                    
+                                }
+                                Console.Write(line1);
+                                Console.WriteLine("-The total amount payable                                                  {0}",a);
+                                if(orderdetail.Order_status == 1)
+                                {
+                                    Console.WriteLine("The order is pending . . ");
+                                }
+                                else if( orderdetail.Order_status == 0)
+                                {
+                                    Console.WriteLine("The order has been processed .. ");
+                                }
+                                
                             }
                         }
+                        catch(valueexception e)
+                        {
+                            Console.Write(e.Message);
+                            continue;
+                        }
+                        catch
+                        {
+                            Console.Write("Please enter a valid value :");
+                            continue;
+                        }
+                        break;
                     }
-                    catch(valueexception e)
-                    {
-                        Console.Write(e.Message);
-                        continue;
-                    }
-                    catch
-                    {
-                        Console.Write("Please enter a valid value :");
-                        continue;
-                    }
-                    break;
                 }
+                Console.Write("\n    Press Enter key to back menu... !");
+                Console.ReadLine();
+                
             }
-            Console.Write("\n    Press Enter key to back menu... !");
-            Console.ReadLine();
-            
+            else if(list.Count == 0)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("The list is empty, no invoices have been generated!");
+                Console.ForegroundColor = ConsoleColor.Gray;
+                Console.ReadLine();
+            }
         }
     }
 }

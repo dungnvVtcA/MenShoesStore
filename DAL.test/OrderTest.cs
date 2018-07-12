@@ -17,13 +17,27 @@ namespace DAL.test
             var result = odl.GetOrders(0,null);
             Assert.NotNull(result);
         }
-         [Fact]
-        public void Test_GetALLOrdersByIDUser()
+        [Theory]
+
+        [InlineData(1)]
+        [InlineData(2)]
+        [InlineData(3)]
+
+        public void Test_GetALLOrdersByIDUser(int id)
         {
-            var result = odl.GetOrders(1,new Orders{user = new User{User_id=1}});
+            var result = odl.GetOrders(1,new Orders{user = new User{User_id=id}});
             Assert.NotNull(result);
         }
+        [Theory]
 
+        [InlineData(0)]
+        [InlineData(1)]
+
+        public void Test_GetAllOrderbyStatus(int status)
+        {
+            var result = odl.GetOrders(2,new Orders{Order_status = status});
+            Assert.NotNull(result);
+        }
         [Fact]
 
         public void Test_update_True()

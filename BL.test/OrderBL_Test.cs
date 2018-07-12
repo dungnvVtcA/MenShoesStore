@@ -15,10 +15,25 @@ namespace BL.test
             var result = obl.GetAllOrder();
             Assert.NotNull(result);
         }
-         [Fact]
-        public void Test_GetALLOrdersByIDUser()
+        [Theory]
+
+        [InlineData(1)]
+        [InlineData(2)]
+        [InlineData(3)]
+
+        public void Test_GetALLOrdersByIDUser(int id)
         {
-            var result = obl.GetAllOrderByIDUser(1);
+            var result = obl.GetAllOrderByIDUser(id);
+            Assert.NotNull(result);
+        }
+        [Theory]
+
+        [InlineData(0)]
+        [InlineData(1)]
+
+        public void Test_GetAllOrderbyStatus(int status)
+        {
+            var result = obl.GetAllOrderbyStatus(status);
             Assert.NotNull(result);
         }
 

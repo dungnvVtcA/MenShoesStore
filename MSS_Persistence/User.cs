@@ -20,6 +20,5 @@ namespace MSS_Persistence
 
         public int Type{get;set;}
 
-        public bool login{get;set;}
     }
 }

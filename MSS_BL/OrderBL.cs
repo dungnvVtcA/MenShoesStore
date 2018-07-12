@@ -16,6 +16,10 @@ namespace MSS_Bl
         {
             return or.GetOrders( 0,null);
         }
+        public List<Orders> GetAllOrderbyStatus(int status)
+        {
+            return or.GetOrders(2, new Orders{Order_status = status});
+        }
         public bool update(int id)
         {
             return or.Update(id);

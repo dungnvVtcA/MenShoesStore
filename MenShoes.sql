@@ -55,6 +55,7 @@ Create  table OrderDetail
     Amount int ,
     Unitprice decimal(20,2)  default 0,
     OD_status int ,
+    Total decimal(20,2) default 0,
     constraint pk_OrderDetail primary key(Or_ID, Shoes_id)
 );
 
@@ -108,19 +109,22 @@ select *from Trademark;
 
 insert into Shoes(TM_id,Price,Shoes_name,Material,Size,Color,Manufacturers,Style,Amount) values
 
-(1,150000.00,'Sneaker OEM','vải đan',41,'đen','tư nhân','thể thao thời trang',5),
-(1,160000.00,'Sneaker OEM','vải đan',40,'xám','tư nhân','thể thao thời trang',3),
-(1,160000.00,'Sneaker OEM','vải đan',40,'Xanh là thẫm','tư nhân','thể thao thời trang',8),
-(4,130000.00,'thể thao 3FASHION','da pu + vải đan',41,'đen','tư nhân','Koria',1),
-(4,130000.00,'thể thao 3FASHION','da pu + vải đan',41,'xanh đen','tư nhân','Koria',4),
-(4,130000.00,'thể thao 3FASHION','da pu + vải đan',41,'hồng','tư nhân','Koria',3),
-(2,101500.00,'Sneaker RINOS','lưới + cao su',41,'xám','CÔNG TY CỔ PHẦN MẠNG TRỰC TUYẾN META','thời trang',1),
-(2,123000.00,'Sneaker RINOS','lưới +cao su',40,'đen','CÔNG TY CỔ PHẦN MẠNG TRỰC TUYẾN META','thời trang',2),
-(3,189000.00,'CV CH2 cao cổ','vải tơ thô',36,'đỏ','công ty cổ phần  HAPULICO','Công sở',5),
-(3,189000.00,'CV CH2 cao cổ','vải tơ thô',40,'trắng','công ty cổ phần  HAPULICO','Công sở',3),
+(1,150000.00,'Sneaker OEM','vải đan',41,'đen','tư nhân','thể thao thời trang',10),
+(1,160000.00,'Sneaker OEM','vải đan',40,'xám','tư nhân','thể thao thời trang',10),
+(1,160000.00,'Sneaker OEM','vải đan',40,'Xanh là thẫm','tư nhân','thể thao thời trang',10),
+(4,130000.00,'thể thao 3FASHION','da pu + vải đan',41,'đen','tư nhân','Koria',10),
+(4,130000.00,'thể thao 3FASHION','da pu + vải đan',41,'xanh đen','tư nhân','Koria',10),
+(4,130000.00,'thể thao 3FASHION','da pu + vải đan',41,'hồng','tư nhân','Koria',10),
+(2,101500.00,'Sneaker RINOS','lưới + cao su',41,'xám','CÔNG TY CỔ PHẦN MẠNG TRỰC TUYẾN META','thời trang',10),
+(2,123000.00,'Sneaker RINOS','lưới +cao su',40,'đen','CÔNG TY CỔ PHẦN MẠNG TRỰC TUYẾN META','thời trang',20),
+(3,189000.00,'CV CH2 cao cổ','vải tơ thô',36,'đỏ','công ty cổ phần  HAPULICO','Công sở',50),
+(3,189000.00,'CV CH2 cao cổ','vải tơ thô',40,'trắng','công ty cổ phần  HAPULICO','Công sở',30),
 (3,189000.00,'CV CH2 cao cổ','vải tơ thô',41,'đen','công ty cổ phần  HAPULICO','Công sở',8);
  select *from Shoes;
+ 
 select *from orderdetail;
+
+
  select LAST_INSERT_ID();
  
  create user if not exists  'Staff'@'localhot' identified by 'staff123';
@@ -129,6 +133,9 @@ grant all on Orders to 'Staff'@'localhot';
 grant all on OrderDetail to  'Staff'@'localhot';
 grant all on MenShoes.* to 'Staff'@'localhot';
 select *from Orders;
+select *from Orders where User_id = 1;
+select Price from Shoes where Shoes_id = 3;
+
 
 
 

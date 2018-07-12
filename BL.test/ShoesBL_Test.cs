@@ -19,11 +19,24 @@ namespace BL.test
             List<Shoes> listShoes = sbl.GetAllShoes();
             Assert.NotNull(listShoes);
         }
-        [Fact]
-        public void GetShoesById_Test()
+        [Theory]
+
+        [InlineData(1)]
+        [InlineData(2)]
+        [InlineData(3)]
+        [InlineData(4)]
+        [InlineData(5)]
+        [InlineData(6)]
+        [InlineData(7)]
+        [InlineData(8)]
+        [InlineData(9)]
+        [InlineData(10)]
+        [InlineData(11)]
+
+        public void GetShoesById_Test(int id)
         {
-            Shoes sh = sbl.GetShoesById(1);
-            Assert.NotNull(sh);                                                                             
+            Shoes sh = sbl.GetShoesById(id);
+            Assert.NotNull(sh); 
         }
         [Fact]
         public void GetShoesById_TestNULL()
