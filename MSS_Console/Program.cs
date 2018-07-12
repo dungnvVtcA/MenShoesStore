@@ -486,7 +486,7 @@ namespace MSS_Console
                     while(true)
                     { 
                         int count = 0;
-                        Console.WriteLine("Nhap Shoes_id : ");
+                        Console.WriteLine("Input Shoes_ID : ");
                         try{
                             
                             int Sh_id = Convert.ToInt32(Console.ReadLine());
@@ -503,7 +503,7 @@ namespace MSS_Console
                             }
                             if (count ==0)
                             {   
-                                throw new valueexception("khong tim thay");
+                                throw new valueexception("Not find Shoes_ID");
                             }
                         }catch(valueexception e)
                         {
@@ -522,18 +522,18 @@ namespace MSS_Console
                             {
                                     Console.Write("Input  Amount: ");
                                     int amount = Convert.ToInt32(Console.ReadLine());
-
+                                    if((amount >result[index].Amount && result[index].Amount == 0) || (amount == result[index].Amount && result[index].Amount == 0) )
+                                    {
+                                        Console.WriteLine("Quantity no longer please put another product .. !");
+                                        Console.ReadLine();
+                                        MenuCustomer();
+                                        
+                                        }
                                     if( amount > result[index].Amount && result[index].Amount >0 )
                                     {
-                                        Console.WriteLine("So luong con : {0}",result[index].Amount);
-                                        throw (new valueexception("So luong khong du , mời bạn nhập lại: "));
+                                        Console.WriteLine("Quantity in stock : {0}",result[index].Amount);
+                                        throw (new valueexception("Not enough quantity , please re-enter: "));
                                     }
-                                    // else if((amount >result[index].Amount && result[index].Amount == 0) || (amount == result[index].Amount && result[index].Amount == 0) )
-                                    // {
-                                    //     Console.WriteLine("so luong da het vui long chon sp khac");
-                                    //     Console.ReadLine();
-                                    //     break;
-                                    // }
                                     else if( 0 < amount || amount <= result[index].Amount)
                                     {
                                         order.shoesList[count1].Amount = amount;
@@ -548,12 +548,12 @@ namespace MSS_Console
                             }
                             catch
                             {
-                                Console.Write("vui long nhap so luong hop le :");
+                                Console.Write("Please enter a valid  :");
                                 continue;
                             }
                             break;
                         }
-                        Console.Write("Ban co muon dat them san pham ?(y/n) ");
+                        Console.Write("Would you want to set more product ?(y/n) ");
                         char choice = Convert.ToChar(Console.ReadLine());
                         if(choice == 'n')
                         {
@@ -562,7 +562,7 @@ namespace MSS_Console
                 
                     }
                 Console.WriteLine("Create Order: " + (obl.CreateOrder(order) ? "completed!" : "not complete!"));
-                Console.Write("Nhan enter !");
+                Console.Write("  Press Enter key to back menu... !");
                 Console.ReadLine();
                 
             }
