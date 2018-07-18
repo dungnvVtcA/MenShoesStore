@@ -7,16 +7,18 @@ using MSS_Persistence;
 using System.Text;
 using System.Security;
 using System.Text.RegularExpressions;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace MSS_Console
 {
     class Program {
-
     static void Main(String[] arg)
     {
         MENU menu = new MENU();
         menu.MainMENU();
-
+    }
+    
     }
     class valueexception: Exception
         {
@@ -24,11 +26,16 @@ namespace MSS_Console
             {
             }
         }
-    public class MENU
+    class MENU
     {
         User result = new User();
         UserBl ubl =new UserBl();
-        private static int id ;
+        Shoes shoes = new Shoes();
+
+        OrderBL obl = new OrderBL();
+        ShoesBL sbl = new ShoesBL();
+        private static int id , sh_id ,oredr_iddelete;
+
         private static bool validate(string str)
         {
                 Regex regex = new Regex("[a-zA-Z0-9_]");
@@ -51,6 +58,29 @@ namespace MSS_Console
                 Console.WriteLine(" " + (i + 1) + ". " + menu[i]);
             }
             Console.WriteLine(line);
+            do
+            {
+                Console.Write("Your choice: ");
+                try
+                {
+                    choose = Int16.Parse(Console.ReadLine());
+                }
+                catch
+                {
+                    Console.WriteLine("Your Choose is wrong!");
+                    continue;
+                }
+            }while (choose <= 0 || choose > menu.Length);
+            return choose;
+        }
+        private static short Menu2(string title, string[] menu)
+        {
+            short choose = 0;
+            Console.WriteLine(" " + title);
+            for (int i = 0; i < menu.Length; i++)
+            {
+                Console.WriteLine(" " + (i + 1) + ". " + menu[i]);
+            }
             do
             {
                 Console.Write("Your choice: ");
@@ -126,8 +156,7 @@ namespace MSS_Console
 
                             }else if( result.Type ==1)
                             {
-                                
-                                MenuStaff();
+                                MenuStaff.Menustaff();
                                 break;
                             }
                         }else{
@@ -153,195 +182,6 @@ namespace MSS_Console
                 }
             }
         }
-        public static void MenuStaff()
-        {
-            OrderBL obl = new OrderBL();
-            int b = 0;
-            var result = obl.GetAllOrder();
-            foreach (var or in result)
-            {
-                if(or.Order_status == 1)
-                {
-                    b++;
-                }
-            }
-            while(true)
-            {
-                Console.Clear();
-                string line = "===================================\n";
-                Console.Write(line);
-                Console.Write("Men Shoes\n");
-                Console.Write(line);
-                Console.WriteLine("1.Browse orders({0})",b);
-                Console.WriteLine("2.The list of approved orders");
-                Console.WriteLine("3.Reload page");
-                Console.WriteLine("4.Log Out");
-                Console.Write(line);
-                Console.Write("You Choose :");
-                var choice = Console.ReadLine();
-                if(choice == " ")
-                {
-                    Console.ReadLine();
-                }
-                switch(choice)
-                {
-                    case "1" : MENU.BrowseOrders();
-                    break;
-                    case "2" :MENU.ListApprovedorders();
-                    break;
-                    case "3" :MENU.Reload();
-                    break;
-                    case "4" :
-                    MENU m = new MENU();
-                    m.MainMENU();
-                    break;
-                    default :
-                    break;
-                }
-                
-                
-            }
-        }
-        public static bool BrowseOrders()
-        {
-            Console.Clear();
-            string line1 = "------------------------------------------------------------------------------------\n";
-            Decimal a = 0;
-            OrderBL obl = new OrderBL();
-            var list = obl.GetAllOrderbyStatus(1);
-            if(list.Count!= 0)
-            {
-                    string line = "============================================================================================";
-                    Console.WriteLine(line);
-                    Console.WriteLine(" Order_id        |   User_ID        |  Date                         |   Order Status  |");
-                    Console.WriteLine(line);
-                    foreach (var orders in list)
-                    {
-                            Console.WriteLine("{0,-20} {1,-20} {2,-29} {3}",orders.Order_id,orders.user.User_id,orders.Date_Order,orders.Order_status);
-                        
-                        
-                    }
-                    Console.WriteLine(line);
-                    while(true){
-                        Console.Write("Enter the ID to view the customer's order details: ");
-                        while (true)
-                        {
-                            
-                            try
-                            {
-                                
-                                int or_id = Convert.ToInt32(Console.ReadLine());
-                                var orderdetail = obl.GetOrderDetailsByID(or_id);
-                                if(orderdetail != null && orderdetail.Order_status == 0 )
-                                {
-                                    throw new valueexception("Order  does not exist or has been approved,please re-enter : ");
-                                }
-                                else if(orderdetail != null && orderdetail.Order_status == 1)
-                                {
-                                    Console.Clear();
-                                    Console.WriteLine("          Order Detail of Customer Information        ");
-                                    Console.WriteLine("-ID                : {0}",orderdetail.Order_id);
-                                    Console.WriteLine("-Order date        : {0}",orderdetail.Date_Order);
-                                    Console.WriteLine("-Customer name     : {0}",orderdetail.user.User_name );
-                                    Console.WriteLine("-Customer phone    : {0}",orderdetail.user.Phone);
-                                    Console.WriteLine("-Customer Address  : {0}",orderdetail.user.Address);
-                                    Console.WriteLine("-Customer Email    : {0}",orderdetail.user.Email);
-                                    Console.Write(line1);
-                                    Console.Write(" Product name      |  Unitprice          |  Amount          |  Size     |     Total          \n");
-                                    foreach (var order in orderdetail.shoesList)
-                                    {
-                                        Decimal b = order.Price*order.Amount;
-                                        Console.WriteLine("{0,-20} {1,-26} {2,-15} {3,-10} {4}",order.Shoes_name,order.Price,order.Amount,order.Size,b);
-                                        a +=b;
-                                    
-                                    }
-                                    Console.Write(line1);
-                                    Console.WriteLine("-The total amount payable                                                  {0}",a);
-                                    Console.WriteLine("Do you want to Browse this Order?(y/n)");
-                                    string choice3 = Console.ReadLine();
-                                    if( choice3 =="y")
-                                    {
-                                        obl.update(or_id);
-                                        Console.WriteLine("...Browse  Order successful!");
-                                        
-                                    }
-                                }
-                            }
-                            catch(valueexception e)
-                            {
-                                Console.Write(e.Message);
-                                continue;
-                            }
-                            catch
-                            {
-                                Console.Write("Please enter a valid value :");
-                                continue;
-                            }
-                            break;
-                        }
-                        
-                        Console.Write("You want to browse order?(y/n)");
-                        string choice = Console.ReadLine();
-                        if( choice == "n")
-                        {
-                            
-                            break;
-                            
-                        }
-                    
-                    }
-                return true;
-            }
-            else if(list.Count == 0)
-            {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("The orders has been processed!");
-                Console.ForegroundColor = ConsoleColor.Gray;
-                Console.ReadLine();
-            }
-            return true;
-
-        }
-
-        public static void ListApprovedorders()
-        
-        {
-            Console.Clear();
-            OrderBL obl = new OrderBL();
-            var list = obl.GetAllOrderbyStatus(0);
-            if( list.Count != 0)
-            {
-                 string line = "============================================================================================";
-                Console.WriteLine(line);
-                Console.WriteLine(" Order_id        |   User_ID        |            Date                  |   Order Status  |");
-                Console.WriteLine(line);
-                foreach (var orders in list)
-                {
-                    if( orders.Order_status == 0)
-                    {
-                        Console.WriteLine("{0,-20} {1,-20} {2,-33} {3}",orders.Order_id,orders.user.User_id,orders.Date_Order,orders.Order_status);
-                    }
-                            
-                }
-                Console.WriteLine(line);
-                Console.Write("\n    Press Enter key to back menu... !");
-                Console.ReadLine();
-            }
-            else if(list.Count == 0)
-            {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("Empty list, no invoices processed...!");
-                Console.ForegroundColor = ConsoleColor.Gray;
-                Console.ReadLine();
-
-            }
-            
-        }
-
-        public static void Reload()
-        {
-            MenuStaff();
-        }
         public static  void MenuCustomer()
         {
             MENU menu = new MENU();
@@ -350,7 +190,7 @@ namespace MSS_Console
             {
                 Console.Clear();
                 short mainChoose = 0;
-                string[] mainMenu = { "Display list shoes", "Crete Orders ", "Display list orders", "Log Out" };
+                string[] mainMenu = { "Display list shoes", "Shopping cart ", "Display orders list", "Log Out" };
                 while( mainChoose!= mainMenu.Length)
                 {
                     Console.Clear();
@@ -359,7 +199,7 @@ namespace MSS_Console
                     {
                         case 1 :menu.Displaylistshoes();
                         break;
-                        case 2 : menu.CreateOrders();
+                        case 2 : menu.ShoppingCart();
                         break;
                         case 3 : menu.DisplayListOrders();
                         break;
@@ -372,7 +212,6 @@ namespace MSS_Console
 
                 }
             }
-            
 
         } 
         public static string GetConsolePassword( )
@@ -422,176 +261,390 @@ namespace MSS_Console
             if(choice == "y" )
             {
                 Console.Write("Input  Shoes_ID: ");
-                        while (true)
-                        {
-                            try
-                            {
-                                    int sh_id = Convert.ToInt32(Console.ReadLine());
-                                    var shoes = sbl.GetShoesById(sh_id);
-                                    if(shoes == null)
-                                    {
-                                        throw new valueexception("Not find Shoes_ID,please re-enter : ");
-                                    }
-                                    else if(shoes != null)
-                                    {
-                                        Console.Clear();
-                                        Console.WriteLine("          Product Information        ");
-                                        Console.WriteLine("-ID                : {0}",shoes.Shoes_id);
-                                        Console.WriteLine("-Name              : {0}",shoes.Shoes_name);
-                                        Console.WriteLine("-Size              : {0}",shoes.Size);
-                                        Console.WriteLine("-Amount            : {0}",shoes.Amount);
-                                        Console.WriteLine("-Price             : {0}dong",shoes.Price);
-                                        Console.WriteLine("-Color             : {0}",shoes.Color);
-                                        Console.WriteLine("-Material          : {0}",shoes.Material);
-                                        Console.WriteLine("-Manufacture       : {0}",shoes.Manufacture);
-                                        Console.WriteLine("-Trademark name    : {0}",shoes.TM.Name);
-                                        Console.WriteLine("-Trademark Origin  : {0}",shoes.TM.Origin);
-                                    }
-                            }
-                            catch(valueexception e)
-                            {
-                                Console.Write(e.Message);
-                                continue;
-                            }
-                            catch
-                            {
-                                Console.Write("Please enter a valid value :");
-                                continue;
-                            }
-                            break;
-                        }
-            }
-            Console.Write("\n    Press Enter key to back menu... !");
-            Console.ReadLine();
-        }
-        
-        public  bool CreateOrders()
-        {
-            Console.Clear();
-            OrderBL obl = new OrderBL();
-            Orders order = new Orders();
-            ShoesBL sbl = new ShoesBL();
-            order.shoesList = new List<Shoes>();
-            int count1 = 0;
-            Shoes sh = new Shoes();
-            order.Order_status = 1;
-            order.user = new User();
-            order.user.User_id =  id;
-            var result = sbl.GetAllShoes();
-            int index = 0;
-            if( result != null)
-            {
-                while(true)
+                while (true)
                 {
-                    while(true)
-                    { 
-                        int count = 0;
-                        Console.WriteLine("Input Shoes_ID : ");
-                        try{
-                            
-                            int Sh_id = Convert.ToInt32(Console.ReadLine());
-                            for (int i = 0; i < result.Count; i++)
-                            {
-                                if(Sh_id == result[i].Shoes_id)
-                                {
-                                    order.shoesList.Add(sbl.GetShoesById(Sh_id));
-                                    index = i;
-                                    count++;
-                                }
-                            
-                                
-                            }
-                            if (count ==0)
-                            {   
-                                throw new valueexception("Not find Shoes_ID");
-                            }
-                        }catch(valueexception e)
+                    try
+                    {
+                        sh_id = Convert.ToInt32(Console.ReadLine());
+                        var shoes = sbl.GetShoesById(sh_id);
+                        if(shoes == null)
                         {
-                            Console.WriteLine(e.Message);
-                            continue;
+                             throw new valueexception("Not find Shoes_ID,please re-enter : ");
                         }
-                        catch{
-                            continue;
+                        else if(shoes != null)
+                        {
+                            Console.Clear();
+                            Console.WriteLine("          Product Information        ");
+                            Console.WriteLine("-ID                : {0}",shoes.Shoes_id);
+                            Console.WriteLine("-Name              : {0}",shoes.Shoes_name);
+                            Console.WriteLine("-Size              : {0}",shoes.Size);
+                            Console.WriteLine("-Amount            : {0}",shoes.Amount);
+                            Console.WriteLine("-Price             : {0}dong",shoes.Price);
+                            Console.WriteLine("-Color             : {0}",shoes.Color);
+                            Console.WriteLine("-Material          : {0}",shoes.Material);
+                            Console.WriteLine("-Manufacture       : {0}",shoes.Manufacture);
+                            Console.WriteLine("-Trademark name    : {0}",shoes.TM.Name);
+                            Console.WriteLine("-Trademark Origin  : {0}",shoes.TM.Origin);
+                            Console.WriteLine();
+                        while(true)
+                        {                   
+                            short mainChoose = 0;
+                            string[] mainMenu = { "Add in shopping cart", "Order now ", "Return shoes list" };
+                            while( mainChoose!= mainMenu.Length)
+                            {                                    
+                                mainChoose = Menu2("You want to add to your shopping cart, buy or return to the shoes list? ", mainMenu);
+                                switch(mainChoose)
+                                {
+                                    case 1  :
+                                    Addshoppingcart();
+                                    break;
+                                    case  2 :
+                                    CreateOrder();
+                                    break ;
+                                    case 3 :
+                                    Displaylistshoes();
+                                    break;
+                                    default :
+                                    break;
+                                    }          
+                                }
+                            }
                         }
+                    }
+                    catch(valueexception e)
+                    {
+                    Console.Write(e.Message);
+                    continue;
+                    }
+                    catch
+                    {
+                        Console.Write("Please enter a valid value :");
+                        continue;
+                    }
+                    break;
+                }
+            }
+            else if( choice == "n")
+            {
+                MenuCustomer();
+            }
+                    
+        }
+        public bool CreateOrder()
+        {
+            OrderBL obl = new OrderBL();
+            Orders orders = new Orders();
+            orders.shoesList = new List<Shoes>();
+            orders.Order_status = 1;
+            orders.user = new User();
+            orders.user.User_id =  id;
+            orders.shoesList.Add(sbl.GetShoesById(sh_id)) ;
+            var getshoes = sbl.GetShoesById(sh_id);
+            while (true)
+            {
+                try
+                {
+                    Console.Write("Input  Amount: ");
+                    int amount1 = Convert.ToInt32(Console.ReadLine());
+                    if((amount1 > getshoes.Amount && getshoes.Amount == 0) || (amount1 == getshoes.Amount && getshoes.Amount == 0) )
+                    {
+                        Console.WriteLine("Quantity no longer please put another product .. !");
+                        Console.ReadLine();
+                        Displaylistshoes();                                            
+                    }
+                    if( amount1 > getshoes.Amount && getshoes.Amount >0 )
+                    {
+                        Console.WriteLine("Quantity in stock : {0}",getshoes.Amount);
+                        throw (new valueexception("Not enough quantity , please re-enter: "));
+                    }
+                    else if( 0 < amount1 || amount1 <= getshoes.Amount)
+                    {
+                        orders.shoesList[0].Amount = amount1;
                         break;
                     }
-                    
-                        while (true)
-                        {
-                            try
-                            {
-                                    Console.Write("Input  Amount: ");
-                                    int amount = Convert.ToInt32(Console.ReadLine());
-                                    if((amount >result[index].Amount && result[index].Amount == 0) || (amount == result[index].Amount && result[index].Amount == 0) )
-                                    {
-                                        Console.WriteLine("Quantity no longer please put another product .. !");
-                                        Console.ReadLine();
-                                        MenuCustomer();
-                                        
-                                        }
-                                    if( amount > result[index].Amount && result[index].Amount >0 )
-                                    {
-                                        Console.WriteLine("Quantity in stock : {0}",result[index].Amount);
-                                        throw (new valueexception("Not enough quantity , please re-enter: "));
-                                    }
-                                    else if( 0 < amount || amount <= result[index].Amount)
-                                    {
-                                        order.shoesList[count1].Amount = amount;
-                                        count1++;
-                                        break;
-                                    }
-                            }
-                            catch(valueexception e)
-                            {
-                                Console.Write(e.Message);
-                                continue;
-                            }
-                            catch
-                            {
-                                Console.Write("Please enter a valid  :");
-                                continue;
-                            }
-                            break;
-                        }
-                        Console.Write("Would you want to set more product ?(y/n) ");
-                        char choice = Convert.ToChar(Console.ReadLine());
-                        if(choice == 'n')
-                        {
-                            break;
-                        }
-                
-                    }
-                Console.WriteLine("Create Order: " + (obl.CreateOrder(order) ? "completed!" : "not complete!"));
-                Console.Write("  Press Enter key to back menu... !");
-                Console.ReadLine();
+                }
+                catch(valueexception e)
+                {
+                    Console.Write(e.Message);
+                    continue;
+                }
+                catch
+                {
+                    Console.Write("Please enter a valid  :");
+                    continue;
+                }
+
+                break;
                 
             }
-            else if( result == null)
+            Console.WriteLine("Create Order: " + (obl.CreateOrder(orders) ? "completed!" : "not complete!"));
+            Console.ReadLine();
+            Displaylistshoes();
+            return true;
+        }
+        public bool Addshoppingcart()
+        {
+            OrderBL obl1 = new OrderBL();
+            var listorders = obl1.GetAllOrderByIDUser(id);
+            Orders order = new Orders();
+            order.user = new User();
+            order.shoesList = new List<Shoes>();
+            int b = listorders.FindIndex(x => x.Order_status == 2);
+
+            if(b != -1)
             {
-                Console.Write("Shoes not exists!");
+                var shoes = sbl.GetShoesById(sh_id);
+                int amount = 0;
+                while(true)
+                {
+                    Console.Write("Input amount : ");
+                    try{
+                        amount = Convert.ToInt32(Console.ReadLine());
+                        if( (amount > shoes.Amount && shoes.Amount == 0)  ||  ( amount == shoes.Amount && shoes.Amount == 0) )
+                        {
+                            Console.WriteLine("Quantity no longer please put another product .. !");
+                            Console.ReadLine();
+                            break;
+                        }
+                        else if( amount > shoes.Amount)
+                        {
+                            throw new valueexception("so luong khong du vui long nhap lai");
+                        }
+                        else if(0< amount && amount<shoes.Amount)
+                        {
+                             break;
+                            
+                        }
+                    }
+                    catch(valueexception e)
+                    {
+                        Console.Write(e.Message);
+                        continue;
+
+                    }catch{
+                        Console.Write("Please enter a valid  :");
+                        continue;
+                    }
+                }
+                int dem  = 0;
+                foreach (var or in listorders)
+                {
+                    if( or.Order_status == 2)
+                    {
+                        var detail = obl1.GetOrderDetailsByID(or.Order_id);
+                        foreach(var shoess in detail.shoesList)
+                        {
+                            if( shoess.Shoes_id == sh_id)
+                            {
+                                obl1.updateAmount(amount,shoess.Shoes_id);
+                                dem = 1;
+                            }else if( shoes.Shoes_id != sh_id)
+                            {
+                                dem = 0;
+                            }
+                        }
+                    }  
+                }
+                if( dem == 0)
+                {
+                    Console.WriteLine("Add in shopping cart: " + (obl1.InsertShoppingCarrt(listorders[b].Order_id,sh_id,amount,shoes.Price,2) ? "completed!" : "not complete!"));                          
+                    Console.ReadLine();
+                    Displaylistshoes();
+
+                }
+                Console.WriteLine("Add in shopping cart completed !");                                    
                 Console.ReadLine();
-                MenuCustomer();
-                return false;
+                Displaylistshoes();
+
+
+            }else if(b == -1)
+            {
+                order.user.User_id = id;
+                order.Order_status = 2;
+                order.shoesList.Add(sbl.GetShoesById(sh_id)) ;
+                var shoes = sbl.GetShoesById(sh_id);
+                int amount;
+                while(true)
+                {
+                    Console.Write("Input amount : ");
+                    try{
+                        amount = Convert.ToInt32(Console.ReadLine());
+                        if( (amount > shoes.Amount && shoes.Amount == 0)  ||  ( amount == shoes.Amount && shoes.Amount == 0) )
+                        {
+                            Console.WriteLine("Quantity no longer please put another product .. !");
+                            Console.ReadLine();
+                            break;
+                        }
+                        else if( amount > shoes.Amount)
+                        {
+                            throw new valueexception("so luong khong du vui long nhap lai");
+                        }
+                        else if(0< amount && amount<shoes.Amount)
+                        {
+                            break;
+                        }
+                    }
+                    catch(valueexception e)
+                    {
+                        Console.Write(e.Message);
+                        continue;
+
+                    }catch{
+                        Console.Write("Please enter a valid  :");
+                        continue;
+                    }
+                }
+                order.shoesList[0].Amount = amount;
+                Console.WriteLine("Add in shopping cart: " + (obl1.AddShppingCart(order) ? "completed!" : "not complete!"));            
+                Console.ReadLine();
+                Displaylistshoes();
             }
             return true;
-            
         }
+        public void ShoppingCart()
+        {
+            var Or_us = obl.GetAllOrderByIDUser(id);
+            decimal a = 0;
+            int b = Or_us.FindIndex(x => x.Order_status == 2);
+            if(b == -1)
+            {
+                Console.Clear();
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("The list is empty, no invoices have been generated!");
+                Console.ForegroundColor = ConsoleColor.Gray;
+                Console.ReadLine();
+            }else if( b != -1)
+            {
+                string line = "============================================================================================";
+                Console.WriteLine(line);
+                foreach (var orders in Or_us)
+                {
+                    if( orders.Order_status == 2){
+                       var orderdetail = obl.GetOrderDetailsByID(orders.Order_id);
+                        Console.Clear();
+                        Console.WriteLine("SHOES STORE");
+                        Console.WriteLine("          Shopping Cart        ");
+                        Console.WriteLine(line);
+                        Console.Write(" Product name      |  Unitprice          |  Amount          |  Size     |     Total          \n");
+                        foreach (var order in orderdetail.shoesList)
+                        {
+                            Decimal c = order.Price*order.Amount;
+                            Console.WriteLine("{0,-20} {1,-26} {2,-15} {3,-10} {4}",order.Shoes_name,order.Price,order.Amount,order.Size,c);
+                            a +=c;      
+                        }
+                        Console.WriteLine(line);
+                        Console.WriteLine("-The total amount payable                                                  {0}",a);
+                    }
+                    
+                }
+                Console.WriteLine(line);
+                Console.Write("Do you want to create  order ?(y/n)");
+                string choiceorder = Console.ReadLine();
+                if(choiceorder == "y")
+                {
+                    Orders orders = new Orders();
+                    orders.shoesList = new List<Shoes>();
+                    orders.Order_status = 1;
+                    int indexsp = 0;
+                    orders.user = new User();
+                    orders.user.User_id =  id;
+                    foreach (var order in Or_us)
+                    {
+                        if(order.user.User_id == id)
+                        {
+                            if(order.Order_status == 2)
+                            {
+                                oredr_iddelete = order.Order_id;
+                                var detail = obl.GetOrderDetailsByID(order.Order_id);
+                                foreach( var shoes in detail.shoesList)
+                                {
+                                    var shoesbyid = sbl.GetShoesById(shoes.Shoes_id);
+                                    if(shoes.Amount > shoesbyid.Amount )
+                                    {
+                                        Console.WriteLine(" Insufficient quantity Would you like to cancel this product? (y/n)",shoesbyid.Amount);
+                                        char c = Convert.ToChar(Console.ReadLine());
+                                        if(c == 'y')
+                                        {
+                                            obl.Delete(order.Order_id, shoes.Amount);
+                                            break;
+                                        }else if(c == 'n')
+                                        {
+                                        orders.shoesList.Add(sbl.GetShoesById(shoes.Shoes_id));            
+                                        while(true)
+                                        {
+                                            Console.WriteLine("Please re-enter the product number: ");
+                                            try{
+                                                int  am = Convert.ToInt32(Console.ReadLine());
+                                                if( (am > shoesbyid.Amount && shoesbyid.Amount == 0)  ||  ( am == shoesbyid.Amount && shoesbyid.Amount == 0) )
+                                                {
+                                                    Console.WriteLine("Quantity no longer please put another product .. !");
+                                                    Console.ReadLine();
+                                                    break;
+                                                }
+                                                else if( am > shoesbyid.Amount)
+                                                {
+                                                    throw new valueexception("Quantity  not enough please re-enter");
+                                                }
+                                                else if(0< am && am<shoesbyid.Amount)
+                                                {
+                                                    orders.shoesList[indexsp].Amount = am;
+                                                    indexsp++;
+                                                    break;
+                                                    }
+                                                }catch(valueexception e)
+                                                {
+                                                Console.Write(e.Message);
+                                                continue;
+                                                }catch{
+                                                    Console.WriteLine("Dung dep trai");
+                                                    Console.Write("Please enter a valid  :");
+                                                    continue;
+                                                }
+                                            }
+                                        }
+                                    }
+                                    else if(0 < shoes.Amount && shoes.Amount < shoesbyid.Amount)
+                                    {
+                                        orders.shoesList.Add(sbl.GetShoesById(shoes.Shoes_id));
+                                        orders.shoesList[indexsp].Amount = shoes.Amount;
+                                        indexsp++; 
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    
+                    Console.WriteLine("Create Order: " + (obl.CreateOrder(orders) ? "completed!" : "not complete!"));
+                    obl.DeleteShoppingCart(2,oredr_iddelete);
+                    Console.ReadLine();
+                    MenuCustomer();
+                }
+                else if( choiceorder == "n")
+                {
+                    MenuCustomer();
+                }
+
+            }
+        }                
         public  void  DisplayListOrders()
         {
             Console.Clear();
             decimal a = 0;
-            string line1 = "------------------------------------------------------------------------------------\n";
+            string line1 = "--------------------------------------------------------------------------------------\n";
             OrderBL obl = new OrderBL();
             var list = obl.GetAllOrderByIDUser(id);
             if(list.Count !=0)
             {
-                string line = "============================================================================================";
+                string line = "========================================================================";
                 Console.WriteLine(line);
                 Console.WriteLine(" Order_id        |  Date                            |   Order Status  |");
                 Console.WriteLine(line);
                 foreach (var orders in list)
                 {
-                    Console.WriteLine("{0,-24}  {1,-33} {2}",orders.Order_id,orders.Date_Order,orders.Order_status);
+                    if( orders.Order_status!=2)
+                    {
+                        Console.WriteLine("{0,-24}  {1,-33} {2}",orders.Order_id,orders.Date_Order,orders.Order_status);
+                    }
                     
                 }
                 Console.WriteLine(line);
@@ -606,11 +659,11 @@ namespace MSS_Console
                         {
                             int or_id = Convert.ToInt32(Console.ReadLine());
                             var orderdetail = obl.GetOrderDetailsByID(or_id);
-                            if(orderdetail == null)
+                            if(orderdetail == null || orderdetail.Order_status == 2 )
                             {
                                 throw new valueexception("Not find Order_ID,please re-enter : ");
                             }
-                            else if(orderdetail != null)
+                            else if(orderdetail != null && orderdetail.Order_status !=2)
                             {
                                 Console.Clear();
                                 Console.WriteLine("SHOES STORE");
@@ -647,6 +700,7 @@ namespace MSS_Console
                         }
                         catch
                         {
+                           
                             Console.Write("Please enter a valid value :");
                             continue;
                         }
@@ -668,4 +722,3 @@ namespace MSS_Console
     }
 }
 
-}

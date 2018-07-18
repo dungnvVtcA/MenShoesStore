@@ -2,8 +2,10 @@
 
 namespace MSS_Persistence
 {
+    [Serializable]
     public class User
     {
+        
         public int User_id{get;set;}
 
         public string AccountName{set; get;}
