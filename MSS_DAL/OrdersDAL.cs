@@ -45,10 +45,13 @@ namespace MSS_DAL
             try
             { 
                 //insert order
-                cmd.CommandText = "insert into Orders(User_id,Or_Status) values (@User_id,@Order_status);";
+                cmd.CommandText = "insert into Orders(User_id,Or_Status,Address,Phone) values (@User_id,@Order_status,@address,@phone);";
                 cmd.Parameters.Clear();
                 cmd.Parameters.AddWithValue("@User_id", orders.user.User_id);
                 cmd.Parameters.AddWithValue("@Order_status", orders.Order_status);
+                cmd.Parameters.AddWithValue("@address", orders.Address);
+                cmd.Parameters.AddWithValue("@phone", orders.phone);
+
                 cmd.ExecuteNonQuery();
 
                 cmd.CommandText = "select LAST_INSERT_ID() as order_id";
@@ -114,6 +117,99 @@ namespace MSS_DAL
             }
 
         }
+        public bool AddShoppingCart(Orders orders)
+        {
+            //orders = new Orders();
+            lock (this)
+            {
+                if( orders == null || orders.shoesList == null || orders.shoesList.Count == 0)
+            {
+                return false;
+            }
+            bool a = true;
+            if(connection.State == System.Data.ConnectionState.Closed)
+            {
+                connection.Open();
+            }
+            MySqlCommand cmd = connection.CreateCommand();
+            cmd.Connection = connection;
+            // khoa cac bang k cho phep nguoi dung sua?
+            cmd.CommandText = "lock tables Users write , Orders write, Shoes write, OrderDetail write;";
+            cmd.ExecuteNonQuery();
+            MySqlTransaction trans = connection.BeginTransaction();
+            cmd.Transaction = trans;
+            MySqlDataReader reader = null;
+            try
+            { 
+                //insert order
+                cmd.CommandText = "insert into Orders(User_id,Or_Status,Address,Phone) values (@User_id,@Order_status,@address,@phone);";
+                cmd.Parameters.Clear();
+                cmd.Parameters.AddWithValue("@User_id", orders.user.User_id);
+                cmd.Parameters.AddWithValue("@Order_status", orders.Order_status);
+                cmd.Parameters.AddWithValue("@address", orders.Address);
+                cmd.Parameters.AddWithValue("@phone", orders.phone);
+
+                cmd.ExecuteNonQuery();
+
+                cmd.CommandText = "select LAST_INSERT_ID() as order_id";
+                reader = cmd.ExecuteReader();
+                if (reader.Read())
+                {
+                    orders.Order_id = reader.GetInt32("Order_id");
+                }
+                reader.Close();
+
+
+                //insert orderdetail table 
+                foreach (var shoes in orders.shoesList)
+                {
+                    if( shoes.Amount <=0)
+                    {
+                        throw new Exception("NOT exists Shoes");
+
+                    }
+                    cmd.CommandText = "select Price from Shoes where Shoes_id =@Shoes_id";
+                    cmd.Parameters.Clear();
+                    cmd.Parameters.AddWithValue("@Shoes_id", shoes.Shoes_id);
+                    reader = cmd.ExecuteReader();
+                    if(!reader.Read())
+                    {
+                        throw new Exception("not exists shoes");
+
+                    }
+                    shoes.Price = reader.GetDecimal("Price");
+                    reader.Close();
+
+                    //insert to orderdetail
+                    cmd.CommandText = "insert into OrderDetail(Or_ID,Shoes_id,Amount,Unitprice,OD_status) values("+orders.Order_id+", "+shoes.Shoes_id+","+shoes.Amount+","+shoes.Price+"," + orders.Order_status +");";
+                    cmd.ExecuteNonQuery();
+                }
+                trans.Commit();
+                a = true;
+
+
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
+                a = false;
+                try{
+                    trans.Rollback();
+                }
+                catch{}
+            }
+            finally
+            {
+                // mo lai tat ca cac bang
+                cmd.CommandText="unlock tables;";
+                cmd.ExecuteNonQuery();
+                connection.Close();
+            }
+            return a;
+            }
+
+        }
+
         public bool Update(int order_id)
         {
             if(connection!= null && connection.State == System.Data.ConnectionState.Closed)
@@ -130,11 +226,11 @@ namespace MSS_DAL
             cmd.Transaction = trans;
             try
             { 
-                cmd.CommandText = "update Orders set Or_Status = 0 where  Or_ID = @Order_id;";
+                cmd.CommandText = "update Orders set Or_Status = 2 where  Or_ID = @Order_id;";
                 cmd.Parameters.Clear();
                 cmd.Parameters.AddWithValue("@Order_id", order_id);
                 cmd.ExecuteNonQuery();
-                cmd.CommandText = "update OrderDetail set OD_status = 0 where Or_ID = @Order_id;";
+                cmd.CommandText = "update OrderDetail set OD_status = 2 where Or_ID = @Order_id;";
                 cmd.Parameters.Clear();
                 cmd.Parameters.AddWithValue("@Order_id", order_id);
                 cmd.ExecuteNonQuery();
@@ -159,7 +255,176 @@ namespace MSS_DAL
                 connection.Close();
             }
             return a;
+        }
+        public bool InsertShoppingCarrt(int? Order_id, int Shoes_id, int Amount, decimal Price, int status)
+        {
+             if(connection!= null && connection.State == System.Data.ConnectionState.Closed)
+            {
+                connection.Open();
             }
+            Orders order = new Orders();
+            bool a = true;
+            MySqlCommand cmd = connection.CreateCommand();
+            cmd.Connection = connection;
+            cmd.CommandText = "lock tables Users write , Orders write, Shoes write, OrderDetail write;";
+            cmd.ExecuteNonQuery();
+            MySqlTransaction trans = connection.BeginTransaction();
+            cmd.Transaction = trans;
+            try
+            { 
+                cmd.CommandText = "insert into OrderDetail(Or_ID ,Shoes_id,Amount,Unitprice,OD_status) values("+Order_id+","+Shoes_id +","+Amount+","+Price+","+status+");";
+                cmd.ExecuteNonQuery();
+                trans.Commit();
+                a = true;
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
+                a = false;
+                try{
+                    trans.Rollback();
+                }
+                catch{}
+            }
+            finally
+            {
+                cmd.CommandText="unlock tables;";
+                cmd.ExecuteNonQuery();
+                connection.Close();
+            }
+            return a;
+        }
+            
+        
+        public bool UpdateAmout(int amount, int sh_id )
+        {
+            if(connection!= null && connection.State == System.Data.ConnectionState.Closed)
+            {
+                connection.Open();
+            }
+            Orders order = new Orders();
+            bool a = true;
+            MySqlCommand cmd = connection.CreateCommand();
+            cmd.Connection = connection;
+            cmd.CommandText = "lock tables Users write , Orders write, Shoes write, OrderDetail write;";
+            cmd.ExecuteNonQuery();
+            MySqlTransaction trans = connection.BeginTransaction();
+            cmd.Transaction = trans;
+            try
+            { 
+                cmd.CommandText = "update OrderDetail set Amount = Amount + @amount where  Shoes_id = @sh_id";
+                cmd.Parameters.Clear();
+                cmd.Parameters.AddWithValue("@amount", amount);
+                cmd.Parameters.AddWithValue("@sh_id", sh_id);
+                cmd.ExecuteNonQuery();
+                trans.Commit();
+                a = true;
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
+                a = false;
+                try{
+                    trans.Rollback();
+                }
+                catch{}
+            }
+            finally
+            {
+                cmd.CommandText="unlock tables;";
+                cmd.ExecuteNonQuery();
+                connection.Close();
+            }
+            return a;
+            }
+
+        public bool Delete(int amount, int? order_id )
+        {
+            if(connection!= null && connection.State == System.Data.ConnectionState.Closed)
+            {
+                connection.Open();
+            }
+            Orders order = new Orders();
+            bool a = true;
+            MySqlCommand cmd = connection.CreateCommand();
+            cmd.Connection = connection;
+            cmd.CommandText = "lock tables Users write , Orders write, Shoes write, OrderDetail write;";
+            cmd.ExecuteNonQuery();
+            MySqlTransaction trans = connection.BeginTransaction();
+            cmd.Transaction = trans;
+            try
+            { 
+                cmd.CommandText = "delete from  OrderDetail where Or_ID = @or_id and Amount = @Amount;";
+                cmd.Parameters.Clear();
+                cmd.Parameters.AddWithValue("@or_id", order_id);
+                cmd.Parameters.AddWithValue("@Amount", amount);
+                cmd.ExecuteNonQuery();
+                trans.Commit();
+                a = true;
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
+                a = false;
+                try{
+                    trans.Rollback();
+                }
+                catch{}
+            }
+            finally
+            {
+                cmd.CommandText="unlock tables;";
+                cmd.ExecuteNonQuery();
+                connection.Close();
+            }
+            return a;
+        }
+        public bool DeleteShoppingCart(int status, int? order_id )
+        {
+            if(connection!= null && connection.State == System.Data.ConnectionState.Closed)
+            {
+                connection.Open();
+            }
+            Orders order = new Orders();
+            bool a = true;
+            MySqlCommand cmd = connection.CreateCommand();
+            cmd.Connection = connection;
+            cmd.CommandText = "lock tables Users write , Orders write, Shoes write, OrderDetail write;";
+            cmd.ExecuteNonQuery();
+            MySqlTransaction trans = connection.BeginTransaction();
+            cmd.Transaction = trans;
+            try
+            { 
+                cmd.CommandText = "delete from OrderDetail where Or_ID =@id_od and OD_status = @status;";
+                cmd.Parameters.Clear();
+                cmd.Parameters.AddWithValue("@id_od", order_id);
+                cmd.Parameters.AddWithValue("@status", status);
+                cmd.ExecuteNonQuery();
+                cmd.CommandText = "delete from Orders where Or_ID = @id_od and Or_Status = @status;";
+                cmd.Parameters.Clear();
+                cmd.Parameters.AddWithValue("@id_od", order_id);
+                cmd.Parameters.AddWithValue("@status", status);
+                cmd.ExecuteNonQuery();
+                trans.Commit();
+                a = true;
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
+                a = false;
+                try{
+                    trans.Rollback();
+                }
+                catch{}
+            }
+            finally
+            {
+                cmd.CommandText="unlock tables;";
+                cmd.ExecuteNonQuery();
+                connection.Close();
+            }
+            return a;
+        }
         private Orders GetOrder(MySqlDataReader reader)
         {
             Orders order = new Orders();
@@ -167,6 +432,8 @@ namespace MSS_DAL
             order.user = new User();
             order.user.User_id = reader.GetInt32("User_id");
             order.Date_Order = reader.GetDateTime("Or_Date");
+            order.Address = reader.GetString("Address");
+            order.phone = reader.GetString("Phone");
             order.Order_status = reader.GetInt32("Or_Status");
             return order; 
 
@@ -211,12 +478,12 @@ namespace MSS_DAL
             
             return GetOrders(cmd);
         }
-        public Orders GetOrderDetailsByID(int id)
+        public Orders GetOrderDetailsByID(int? id)
         {
             if(connection.State == System.Data.ConnectionState.Closed){
                 connection.Open();
             }
-            string query = "Select Orders.Or_ID ,Users.User_id,Users.Phone,Users.User_name,Users.User_Address,Users.Email,Orders.Or_Date,Shoes.Shoes_name,Shoes.Size,OrderDetail.Amount,OrderDetail.Unitprice,Orders.Or_Status from Orders inner join Users on Orders.User_id = Users.User_id inner join OrderDetail on Orders.Or_ID = OrderDetail.Or_ID inner join Shoes on Orderdetail.Shoes_id = Shoes.Shoes_id where Orders.Or_ID="+id+";";
+            string query = "Select Orders.Or_ID ,Orders.Phone,Orders.Address,Users.User_id,Users.Phone,Users.User_name,Users.User_Address,Users.Email,Orders.Or_Date,Shoes.Shoes_id,Shoes.Price,Shoes.Shoes_name,Shoes.Size,OrderDetail.Amount,OrderDetail.Unitprice,Orders.Or_Status from Orders inner join Users on Orders.User_id = Users.User_id inner join OrderDetail on Orders.Or_ID = OrderDetail.Or_ID inner join Shoes on Orderdetail.Shoes_id = Shoes.Shoes_id where Orders.Or_ID="+id+";";
             Orders or = new Orders();
             or.shoesList = new List<Shoes>();
             MySqlCommand cmd = new MySqlCommand(query, connection);
@@ -225,18 +492,21 @@ namespace MSS_DAL
             while(reader.Read())
             {
                 or.Order_id = reader.GetInt32("Or_ID");
+                or.Address = reader.GetString("Address");
+                or.phone = reader.GetString("Phone");
                 or.user = new User();
                 or.user.User_id = reader.GetInt32("User_id");
                 or.user.User_name = reader.GetString("User_name");
-                or.user.Phone = reader.GetInt32("Phone");
+                or.user.Phone = reader.GetString("Phone");
                 or.user.Address = reader.GetString("User_Address");
                 or.user.Email = reader.GetString("Email");
                 or.Date_Order = reader.GetDateTime("Or_Date");
                 or.Order_status = reader.GetInt32("Or_Status");
                 Shoes s = new Shoes();
+                s.Shoes_id = reader.GetInt32("Shoes_id");
                 s.Shoes_name = reader.GetString("Shoes_name");
                 s.Amount = reader.GetInt32("Amount");
-                s.Price = reader.GetDecimal("Unitprice");
+                s.Price = reader.GetDecimal("Price");
                 s.Size = reader.GetInt32("Size");
                 or.shoesList.Add(s);
             }

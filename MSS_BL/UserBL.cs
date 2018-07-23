@@ -12,6 +12,10 @@ namespace MSS_Bl
         {
             return u.Login(id,pass);
         }
+        public User GetUserByid(int id)
+        {
+            return u.GetUserByid(id);
+        }
     
     }
 }

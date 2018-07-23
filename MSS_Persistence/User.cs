@@ -2,7 +2,6 @@
 
 namespace MSS_Persistence
 {
-    [Serializable]
     public class User
     {
         
@@ -12,7 +11,7 @@ namespace MSS_Persistence
 
         public string User_name{set; get;}
 
-        public int Phone{set; get;}
+        public string Phone{set; get;}
 
         public string Address{set ; get;}
 

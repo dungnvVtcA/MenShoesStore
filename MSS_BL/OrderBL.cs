@@ -12,6 +12,15 @@ namespace MSS_Bl
             bool create = or.CreateOrders(orders);
             return create;
         }
+        public bool InsertShoppingCarrt(int? Order_id, int Shoes_id, int Amount, decimal Price, int status)
+        {
+            return or.InsertShoppingCarrt(Order_id,Shoes_id,Amount,Price,status);
+        }
+        public bool AddShppingCart(Orders orders)
+        {
+            bool create = or.AddShoppingCart(orders);
+            return create;
+        }
         public List<Orders> GetAllOrder()
         {
             return or.GetOrders( 0,null);
@@ -28,10 +37,21 @@ namespace MSS_Bl
         {
             return or.GetOrders(1, new Orders{user = new User{User_id=user_id}});
         }
-        public Orders GetOrderDetailsByID(int id)
+        public Orders GetOrderDetailsByID(int? id)
         {
             return or.GetOrderDetailsByID(id);
         }
-        
+        public bool updateAmount( int amount , int order_id)
+        {
+            return or.UpdateAmout(amount, order_id);
+        }
+        public bool Delete(int amount, int? order_id )
+        {
+            return or.Delete(amount, order_id);
+        }
+        public bool DeleteShoppingCart(int status, int? order_id )
+        {
+            return or.DeleteShoppingCart(status,order_id);
+        }
     }
 }

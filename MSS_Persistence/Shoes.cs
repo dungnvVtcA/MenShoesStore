@@ -1,7 +1,7 @@
 using System;
 namespace MSS_Persistence
 {
-    [Serializable]
+    
     public class Shoes
     {
         public int Shoes_id{set; get;}

@@ -3,10 +3,10 @@ using System.Collections.Generic;
 
 namespace MSS_Persistence
 {
-    [Serializable]
+
     public class Orders
     {
-        public int Order_id{set;get;}
+        public int? Order_id{set;get;}
 
         public DateTime Date_Order{set;get;}
 
@@ -14,7 +14,10 @@ namespace MSS_Persistence
 
         public int Order_status{set;get;}
 
-        public Shoes Order_Shoes{set;get;}
+        public string phone{set;get;}
+
+        public string Address{set;get;}
+
         private List<Shoes> ShoesList;
         public List<Shoes> shoesList { get => ShoesList; set => ShoesList = value; }
 
