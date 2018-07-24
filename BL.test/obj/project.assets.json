@@ -6179,11 +6179,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\DUNG\\Desktop\\MenShoesStore\\BL.test\\BL.test.csproj",
+      "projectUniqueName": "F:\\MenShoesStore_PA2\\BL.test\\BL.test.csproj",
       "projectName": "BL.test",
-      "projectPath": "C:\\Users\\DUNG\\Desktop\\MenShoesStore\\BL.test\\BL.test.csproj",
+      "projectPath": "F:\\MenShoesStore_PA2\\BL.test\\BL.test.csproj",
       "packagesPath": "C:\\Users\\DUNG\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\DUNG\\Desktop\\MenShoesStore\\BL.test\\obj\\",
+      "outputPath": "F:\\MenShoesStore_PA2\\BL.test\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -6200,8 +6200,8 @@
       "frameworks": {
         "netcoreapp2.0": {
           "projectReferences": {
-            "C:\\Users\\DUNG\\Desktop\\MenShoesStore\\MSS_BL\\MSS_Bl.csproj": {
-              "projectPath": "C:\\Users\\DUNG\\Desktop\\MenShoesStore\\MSS_BL\\MSS_Bl.csproj"
+            "F:\\MenShoesStore_PA2\\MSS_BL\\MSS_Bl.csproj": {
+              "projectPath": "F:\\MenShoesStore_PA2\\MSS_BL\\MSS_Bl.csproj"
             }
           }
         }

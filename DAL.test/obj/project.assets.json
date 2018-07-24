@@ -6115,11 +6115,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\DUNG\\Desktop\\MenShoesStore\\DAL.test\\DAL.test.csproj",
+      "projectUniqueName": "F:\\MenShoesStore_PA2\\DAL.test\\DAL.test.csproj",
       "projectName": "DAL.test",
-      "projectPath": "C:\\Users\\DUNG\\Desktop\\MenShoesStore\\DAL.test\\DAL.test.csproj",
+      "projectPath": "F:\\MenShoesStore_PA2\\DAL.test\\DAL.test.csproj",
       "packagesPath": "C:\\Users\\DUNG\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\DUNG\\Desktop\\MenShoesStore\\DAL.test\\obj\\",
+      "outputPath": "F:\\MenShoesStore_PA2\\DAL.test\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -6136,8 +6136,8 @@
       "frameworks": {
         "netcoreapp2.0": {
           "projectReferences": {
-            "C:\\Users\\DUNG\\Desktop\\MenShoesStore\\MSS_DAL\\MSS_DAL.csproj": {
-              "projectPath": "C:\\Users\\DUNG\\Desktop\\MenShoesStore\\MSS_DAL\\MSS_DAL.csproj"
+            "F:\\MenShoesStore_PA2\\MSS_DAL\\MSS_DAL.csproj": {
+              "projectPath": "F:\\MenShoesStore_PA2\\MSS_DAL\\MSS_DAL.csproj"
             }
           }
         }

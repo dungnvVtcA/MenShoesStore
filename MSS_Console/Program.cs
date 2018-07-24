@@ -510,7 +510,7 @@ namespace MSS_Console
                 }
                 if( dem == 0)
                 {
-                    Console.WriteLine("Add in shopping cart: " + (obl1.InsertShoppingCarrt(listorders[b].Order_id,sh_id,amount,shoes.Price,2) ? "completed!" : "not complete!"));                          
+                    Console.WriteLine("Add in shopping cart: " + (obl1.InsertShoppingCarrt(listorders[b].Order_id,sh_id,amount,shoes.Price,0) ? "completed!" : "not complete!"));                          
                     Console.ReadLine();
                     Displaylistshoes();
 

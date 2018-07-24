@@ -66,7 +66,7 @@ namespace DAL.test
             sh.Shoes_id = 1;
             sh.Amount = 2;
             or.shoesList.Add(sh);
-            Assert.True(odl.CreateOrders(or));
+            Assert.False(odl.CreateOrders(or));
         }
 
     }
