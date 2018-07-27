@@ -29,9 +29,9 @@ namespace MSS_Bl
         {
             return or.GetOrders(2, new Orders{Order_status = status});
         }
-        public bool update(int id)
+        public bool update(Orders order)
         {
-            return or.Update(id);
+            return or.Update(order);
         }
         public List<Orders> GetAllOrderByIDUser(int user_id)
         {

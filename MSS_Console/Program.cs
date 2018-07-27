@@ -15,7 +15,6 @@ namespace MSS_Console
     class Program {
     static void Main(String[] arg)
     {
-        
         MENU menu = new MENU();
         menu.MainMENU();
     }
@@ -125,14 +124,14 @@ namespace MSS_Console
                     {
                         
                         Console.Write("---------      LOG IN      ---------\n");
-                        Console.Write("-Username :");
+                        Console.Write("-User name :");
                         string name = Console.ReadLine();
                         Console.Write("-Password : ");
                         string pass = GetConsolePassword();
                         while ((validate(name) == false) || (validate(pass) == false))
                         {
                             Console.ForegroundColor = ConsoleColor.Red;
-                            Console.WriteLine(".  .  .Username or password wrong, please re-enter ! ");
+                            Console.WriteLine(".  .  .User name or password wrong, please re-enter ! ");
                             Console.ForegroundColor = ConsoleColor.Gray;
                             Console.Write("You want to keep signing in?(y/n) :");
                             string chon = Console.ReadLine();
@@ -142,7 +141,7 @@ namespace MSS_Console
                             }
                             Console.Clear();
                             Console.Write("---------      LOG IN      ---------\n");
-                            Console.Write("-Username: ");
+                            Console.Write("-User name: ");
                             name = Console.ReadLine();
                             Console.Write("-Password: ");
                             pass = GetConsolePassword();
@@ -164,7 +163,7 @@ namespace MSS_Console
                             }
                         }else{
                             Console.ForegroundColor = ConsoleColor.Red;
-                            Console.WriteLine(".  .  .Username or password wrong, please re-enter ! ");
+                            Console.WriteLine(".  .  .User name or password wrong, please re-enter ! ");
                             Console.ForegroundColor = ConsoleColor.Gray;
                             Console.Write("You want to keep signing in?(y/n) :");
                             string chon = Console.ReadLine();
@@ -256,7 +255,7 @@ namespace MSS_Console
             Console.WriteLine(line);
             foreach (var Shoes in lists)
             {
-                string money = String.Format("{0:0,0.00}vnđ",Shoes.Price);
+                string money = String.Format("{0:0,0}vnđ",Shoes.Price);
                 Console.WriteLine("{0,-15}{1,-25}{2,-17}{3,-10}{4,-24}{5,-18}{6} ",Shoes.Shoes_id,Shoes.Shoes_name,money,Shoes.Size,Shoes.Style,Shoes.Color,Shoes.Amount);
             }
             Console.WriteLine(line);
@@ -277,7 +276,7 @@ namespace MSS_Console
                         }
                         else if(shoes != null)
                         {
-                            string money = String.Format("{0:0,0.00}vnđ",shoes.Price);
+                            string money = String.Format("{0:0,0}vnđ",shoes.Price);
                             Console.Clear();
                             Console.WriteLine("          Product Information        ");
                             Console.WriteLine("-ID                : {0}",shoes.Shoes_id);
@@ -574,7 +573,7 @@ namespace MSS_Console
         public void ShoppingCart()
         {
             var Or_us = obl.GetAllOrderByIDUser(id);
-            decimal a = 0;
+            decimal a;
             string money1 = "0";
             int b = Or_us.FindIndex(x => x.Order_status == 0);
             if(b == -1)
@@ -590,6 +589,7 @@ namespace MSS_Console
                 Console.WriteLine(line);
                 foreach (var orders in Or_us)
                 {
+                    a = 0;
                     if( orders.Order_status == 0){
                        var orderdetail = obl.GetOrderDetailsByID(orders.Order_id);
                         Console.Clear();
@@ -600,8 +600,8 @@ namespace MSS_Console
                         foreach (var order in orderdetail.shoesList)
                         {
                             Decimal c = order.Price*order.Amount;
-                            string money = String.Format("{0:0,0.00}vnđ",c);
-                            string money2 = String.Format("{0:0,0.00}vnđ",order.Price);
+                            string money = String.Format("{0:0,0}vnđ",c);
+                            string money2 = String.Format("{0:0,0}vnđ",order.Price);
                             Console.WriteLine("{0,-20} {1,-26} {2,-15} {3,-10} {4}",order.Shoes_name,money2,order.Amount,order.Size,money);
                             
                             a +=c;      
@@ -736,7 +736,7 @@ namespace MSS_Console
         public  void  DisplayListOrders()
         {
             Console.Clear();
-            decimal k = 0;
+            decimal k ;
             int sl = 0;
             OrderBL obl = new OrderBL();
             var list = obl.GetAllOrderByIDUser(id);
@@ -748,6 +748,7 @@ namespace MSS_Console
                 Console.WriteLine(line);
                 foreach (var orders in list)
                 {
+                    k = 0;
                     if( orders.Order_status!=0)
                     {
                         var orderdetail = obl.GetOrderDetailsByID(orders.Order_id);
@@ -755,7 +756,7 @@ namespace MSS_Console
                         {
                             decimal price = item.Price * item.Amount;
                             k +=price;
-                            moneylistor = String.Format("{0:0,0.00}vnđ",k);
+                            moneylistor = String.Format("{0:0,0}vnđ",k);
                             if( orderdetail.shoesList.Count > 1)
                             {
                                 sl = orderdetail.shoesList.Count -1;
@@ -826,10 +827,11 @@ namespace MSS_Console
                         foreach (var order in orderdetail.shoesList)
                         {
                             Decimal b = order.Price*order.Amount;
-                            string money = String.Format("{0:0,0.00}vnđ",b);
-                            Console.WriteLine("{0,-20} {1,-26} {2,-15} {3,-10} {4}",order.Shoes_name,order.Price,order.Amount,order.Size,money);
+                            string money = String.Format("{0:0,0}vnđ",b);
+                            string money2 = String.Format("{0:0,0}vnđ",order.Price);
+                            Console.WriteLine("{0,-20} {1,-26} {2,-15} {3,-10} {4}",order.Shoes_name,money2,order.Amount,order.Size,money);
                             a +=b;       
-                            moneylistor =  String.Format("{0:0,0.00}vnđ",a);         
+                            moneylistor =  String.Format("{0:0,0}vnđ",a);         
                             
                                     
                         }

@@ -3,11 +3,6 @@
   <ItemGroup>
     <ProjectReference Include="..\MSS_Persistence\MSS_Persistence.csproj" />
   </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="MySql.Data" Version="6.10.6" />
-  </ItemGroup>
-
   <ItemGroup>
     <EmbeddedResource Include=".\ConnectionString.txt">
       <Link>.\ConnectionString.txt</Link>
@@ -16,6 +11,11 @@
       <Pack>True</Pack>
       <PackagePath>.</PackagePath>
     </None>
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <PackageReference Include="MySql.Data" Version="8.0.11" />
   </ItemGroup>
 
 

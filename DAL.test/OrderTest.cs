@@ -38,12 +38,12 @@ namespace DAL.test
             var result = odl.GetOrders(2,new Orders{Order_status = status});
             Assert.NotNull(result);
         }
-        [Fact]
+        // [Fact]
 
-        public void Test_update_True()
-        {
-            Assert.True(odl.Update(1));
-        }
+        // public void Test_update_True()
+        // {
+        //     Assert.True(odl.Update(1));
+        // }
 
         [Fact]
 

@@ -86,11 +86,6 @@ namespace MSS_DAL
                     //insert to orderdetail
                     cmd.CommandText = "insert into OrderDetail(Or_ID,Shoes_id,Amount,Unitprice,OD_status) values("+orders.Order_id+", "+shoes.Shoes_id+","+shoes.Amount+","+shoes.Price+"," + orders.Order_status +");";
                     cmd.ExecuteNonQuery();
-                    // update so luong
-                    cmd.CommandText = "update Shoes set Amount=Amount-@quantity where Shoes_id=" + shoes.Shoes_id + ";";
-                    cmd.Parameters.Clear();
-                    cmd.Parameters.AddWithValue("@quantity", shoes.Amount);
-                    cmd.ExecuteNonQuery();
                 }
                 trans.Commit();
                 a = true;
@@ -210,13 +205,12 @@ namespace MSS_DAL
 
         }
 
-        public bool Update(int order_id)
+        public bool Update(Orders order)
         {
             if(connection!= null && connection.State == System.Data.ConnectionState.Closed)
             {
                 connection.Open();
             }
-            Orders order = new Orders();
             bool a = true;
             MySqlCommand cmd = connection.CreateCommand();
             cmd.Connection = connection;
@@ -228,12 +222,31 @@ namespace MSS_DAL
             { 
                 cmd.CommandText = "update Orders set Or_Status = 2 where  Or_ID = @Order_id;";
                 cmd.Parameters.Clear();
-                cmd.Parameters.AddWithValue("@Order_id", order_id);
+                cmd.Parameters.AddWithValue("@Order_id", order.Order_id);
                 cmd.ExecuteNonQuery();
                 cmd.CommandText = "update OrderDetail set OD_status = 2 where Or_ID = @Order_id;";
                 cmd.Parameters.Clear();
-                cmd.Parameters.AddWithValue("@Order_id", order_id);
+                cmd.Parameters.AddWithValue("@Order_id", order.Order_id);
                 cmd.ExecuteNonQuery();
+                foreach (var shoes in order.shoesList)
+                {
+                    cmd.CommandText = "select Price from Shoes where Shoes_id =@Shoes_id";
+                    cmd.Parameters.Clear();
+                    cmd.Parameters.AddWithValue("@Shoes_id", shoes.Shoes_id);
+                    reader = cmd.ExecuteReader();
+                    if(!reader.Read())
+                    {
+                        throw new Exception("not exists shoes");
+
+                    }
+                    shoes.Price = reader.GetDecimal("Price");
+                    reader.Close();
+                    cmd.CommandText = "update Shoes set Amount=Amount-@quantity where Shoes_id=" + shoes.Shoes_id + ";";
+                    cmd.Parameters.Clear();
+                    cmd.Parameters.AddWithValue("@quantity", shoes.Amount);
+                    cmd.ExecuteNonQuery();
+                }
+               
                 trans.Commit();
                 a = true;
 

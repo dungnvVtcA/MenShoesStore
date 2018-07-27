@@ -67,11 +67,14 @@ namespace MSS_Console
             Console.Clear();
             string line1 = "------------------------------------------------------------------------------------\n";
             Decimal a = 0;
+            int dem= 0;
             OrderBL obl = new OrderBL();
+            Orders orderss = new Orders();
+            orderss.shoesList = new List<Shoes>();
             var list = obl.GetAllOrderbyStatus(1);
             if(list.Count!= 0)
             {
-                decimal k = 0;
+                decimal k ;
                 int sl = 0;
                    string line = "================================================================================================================================================================";
                     Console.WriteLine(line);
@@ -79,6 +82,7 @@ namespace MSS_Console
                     Console.WriteLine(line);
                     foreach (var orders in list)
                     {
+                        k = 0;
                         if( orders.Order_status!=0)
                         {
                             var orderdetail = obl.GetOrderDetailsByID(orders.Order_id);
@@ -86,7 +90,7 @@ namespace MSS_Console
                             {
                                 decimal price = item.Price * item.Amount;
                                 k +=price;
-                                money = String.Format("{0:0,0.00}vnđ",k);
+                                money = String.Format("{0:0,0}vnđ",k);
                                 if( orderdetail.shoesList.Count > 1)
                                 {
                                     sl = orderdetail.shoesList.Count -1;
@@ -117,11 +121,9 @@ namespace MSS_Console
                         while(true){
                         Console.Write("Enter the ID to view the customer's order details: ");
                             while (true)
-                            {
-                                
+                            {  
                                 try
                                 {
-                                    
                                     int or_id = Convert.ToInt32(Console.ReadLine());
                                     var orderdetail = obl.GetOrderDetailsByID(or_id);
                                     if(orderdetail != null && orderdetail.Order_status == 2 )
@@ -143,11 +145,12 @@ namespace MSS_Console
                                         foreach (var order in orderdetail.shoesList)
                                         {
                                             Decimal b = order.Price*order.Amount;
-                                            string  money = String.Format("{0:0,0.00}vnđ",b);
-                                            string money3 = String.Format("{0:0,0.00}vnđ",order.Price);
+                                            string  money = String.Format("{0:0,0}vnđ",b);
+                                            string money3 = String.Format("{0:0,0}vnđ",order.Price);
                                             Console.WriteLine("{0,-20} {1,-26} {2,-15} {3,-10} {4}",order.Shoes_name,money3,order.Amount,order.Size,money);
                                             a +=b;
-                                            money2 = String.Format("{0:0,0.00}vnđ",a);
+                                            money2 = String.Format("{0:0,0}vnđ",a);
+                                            
                                         
                                         }
                                         Console.Write(line1);
@@ -156,7 +159,17 @@ namespace MSS_Console
                                         string choice3 = Console.ReadLine();
                                         if( choice3 =="y")
                                         {
-                                            obl.update(or_id);
+
+                                            var result = obl.GetOrderDetailsByID(or_id);                                          
+                                            orderss.Order_id = or_id;
+                                            ShoesBL sbl = new ShoesBL();
+                                            foreach (var shoes in result.shoesList)
+                                            {
+                                                orderss.shoesList.Add(sbl.GetShoesById(shoes.Shoes_id));
+                                                orderss.shoesList[dem].Amount = shoes.Amount;
+                                                dem++;
+                                            }
+                                            Console.WriteLine("Create Order: " + (obl.update(orderss) ? "completed!" : "not complete!"));
                                             Console.WriteLine("...Browse  Order successful!");
                                             
                                         }
@@ -223,6 +236,7 @@ namespace MSS_Console
             {
                 decimal k = 0;
                 int sl = 0;
+                decimal price2 = 0;
                 if( list.Count != 0)
                 {
                     string line = "====================================================================================================================================================================";
@@ -233,24 +247,23 @@ namespace MSS_Console
                     {
                         if( orders.Order_status!=0)
                         {
+                            k = 0;
                             var orderdetail = obl.GetOrderDetailsByID(orders.Order_id);
-                            foreach (var item in orderdetail.shoesList)
+                            foreach (var sh in orderdetail.shoesList)
                             {
-                                decimal price = item.Price * item.Amount;
-                                k +=price;
-                                money = String.Format("{0:0,0.00}vnđ",k);
-
-                                if( orderdetail.shoesList.Count > 1)
-                                {
-                                    sl = orderdetail.shoesList.Count -1;
-                                    full = orderdetail.user.User_name+"("+orderdetail.shoesList[0].Shoes_name +" "+"..and"+ sl +" "+"other products "+")";
-                                }else
-                                {
-                                    full = orderdetail.user.User_name+"("+orderdetail.shoesList[0].Shoes_name+")";
-                                }
+                                price2 = sh.Price * sh.Amount;
+                                k += price2;
                             
                             }
-                             if(orderdetail.Order_status == 1)
+                            if( orderdetail.shoesList.Count > 1)
+                            {
+                                sl = orderdetail.shoesList.Count -1;
+                                full = orderdetail.user.User_name+"("+orderdetail.shoesList[0].Shoes_name +" "+"..and"+ sl +" "+"other products "+")";
+                            }else
+                            {
+                                full = orderdetail.user.User_name+"("+orderdetail.shoesList[0].Shoes_name+")";
+                            }
+                            if(orderdetail.Order_status == 1)
                             {
                                 status = "The order is pending . . ";
                             }
@@ -258,7 +271,11 @@ namespace MSS_Console
                             {
                                 status = "The order has been processed .. ";
                             }                
-                            Console.WriteLine("{0,-20}{1,-53}{2,-32} {3,-19} {4}",orders.Order_id,full,orders.Date_Order,money,status);
+                            
+                            string  money9 = String.Format("{0:0,0}vnđ",k);
+
+                            Console.WriteLine("{0,-20}{1,-53}{2,-32} {3,-19} {4}",orders.Order_id,full,orders.Date_Order,money9,status);
+                           
                         }
                         
                     }
@@ -315,7 +332,7 @@ namespace MSS_Console
                 }
             
             }
-            if( orderdetail.Order_id != null && orderdetail.Order_status !=2)
+            if( orderdetail.Order_id != null && orderdetail.Order_status !=0)
             {
                 Console.Clear();
                 Console.WriteLine("SHOES STORE");
@@ -331,11 +348,11 @@ namespace MSS_Console
                 foreach (var order in orderdetail.shoesList)
                 {
                     Decimal b = order.Price*order.Amount;
-                    string  money = String.Format("{0:0,0.00}vnđ",b);
-                    string money3 = String.Format("{0:0,0.00}vnđ",order.Price);
+                    string  money = String.Format("{0:0,0}vnđ",b);
+                    string money3 = String.Format("{0:0,0}vnđ",order.Price);
                     Console.WriteLine("{0,-20} {1,-26} {2,-15} {3,-10} {4}",order.Shoes_name,money3,order.Amount,order.Size,b);
                     a +=b;           
-                    money2 = String.Format("{0:0,0.00}vnđ",a);
+                    money2 = String.Format("{0:0,0}vnđ",a);
                             
                 }
                 Console.Write(line1);

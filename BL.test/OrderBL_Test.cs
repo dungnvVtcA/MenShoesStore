@@ -37,12 +37,12 @@ namespace BL.test
             Assert.NotNull(result);
         }
 
-        [Fact]
+        // [Fact]
 
-        public void Test_update_True()
-        {
-            Assert.True(obl.update(1));
-        }
+        // public void Test_update_True()
+        // {
+        //     Assert.True(obl.update(1));
+        // }
         [Fact]
 
         public void GetOrderDetailsByID()
