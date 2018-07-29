@@ -37,12 +37,19 @@ namespace BL.test
             Assert.NotNull(result);
         }
 
-        // [Fact]
+        [Fact]
 
-        // public void Test_update_True()
-        // {
-        //     Assert.True(obl.update(1));
-        // }
+        public void Test_BrowseOrders_True()
+        {
+            Orders or = new Orders();
+            or.Order_id = 1;
+            or.shoesList = new List<Shoes>();
+            Shoes sh = new Shoes();
+            sh.Shoes_id = 1;
+            sh.Amount = 3;
+            or.shoesList.Add(sh);
+            Assert.True(obl.BrowseOrders(or));
+        }
         [Fact]
 
         public void GetOrderDetailsByID()
